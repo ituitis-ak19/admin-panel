@@ -13,7 +13,7 @@ class Employee extends BaseModel<Employee> {
   String? email;
   String? department;
 
-  Employee(
+  Employee( 
       {this.id,
       this.firstName,
       this.lastName,

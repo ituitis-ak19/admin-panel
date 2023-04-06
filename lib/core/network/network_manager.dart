@@ -8,40 +8,61 @@ import 'package:admin_ui/core/network/model/response_model.dart';
 class NetworkManager {
   Future<ResponseModel<R>> postData<R, T>(
       String url, BaseModel<T> baseModel, String? data, String? token) async {
-    var res =
-        await http.post(Uri.parse(url), body: data, headers: <String, String>{
-      'Authorization': token ?? "",
-    });
-    ResponseModel<R> result = handleResponse(res, baseModel);
+    Response res;
 
-    return result;
+    try {
+      res =
+          await http.post(Uri.parse(url), body: data, headers: <String, String>{
+        'Authorization': token ?? "",
+      });
+      return handleResponse(res, baseModel);
+    } catch (e) {
+      print(e);
+    }
+    return ResponseModel<R>();
   }
 
   Future<ResponseModel<R>> getData<R, T>(
       String url, BaseModel<T> baseModel, String? token) async {
-    var res = await http.get(Uri.parse(url), headers: <String, String>{
-      'Authorization': token ?? "",
-    });
-    ResponseModel<R> result = handleResponse(res, baseModel);
+    ResponseModel<R> responseModel = ResponseModel();
 
-    return result;
+    try {
+      var res = await http.get(Uri.http(url), headers: <String, String>{
+        'Authorization': token ?? "",
+      });
+      return handleResponse(res, baseModel);
+    } catch (e) {
+      responseModel.error = true;
+      print(e);
+    }
+
+    return responseModel;
   }
 
   ResponseModel<R> handleResponse<R, T>(Response res, BaseModel<T> baseModel) {
     ResponseModel<R> result = ResponseModel();
     switch (res.statusCode) {
       case 200:
-        if (jsonDecode(res.body)["list"] != null) {
-          final resultList = jsonDecode(res.body)["list"] as List;
+        if (jsonDecode(res.body) != null) {
+          var jsonBody = jsonDecode(res.body);
+          result = result.fromJson(jsonBody);
 
-          result.data =
-              resultList.map((json) => baseModel.fromJson(json)).toList() as R;
+          if (jsonBody is List) {
+            result.data = jsonBody
+                .map((json) => baseModel.fromJson(json))
+                .toList()
+                .cast<T>() as R;
+          } else {
+            result.data = baseModel.fromJson(jsonBody) as R;
+          }
+
+          //result.data =
+          //  resultList.map((json) => baseModel.fromJson(json)).toList() as R;
         } else {
-          result.data = baseModel.fromJson(jsonDecode(res.body)) as R;
+          result.error = true;
         }
         break;
       default:
-        result.errorCode = res.statusCode.toString();
     }
     return result;
   }

@@ -13,7 +13,7 @@ class EmployeeService {
   Future<List<Employee>?> getEmployees() async {
     ResponseModel<List<Employee>> result =
         await networkManager.getData<List<Employee>, Employee>(
-            "http://localhost:3000/employees", Employee(), null);
+            "localhost:8080/employee", Employee(), null);
     return result.data;
   }
 }
