@@ -3,31 +3,19 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:admin_ui/core/base/base_model.dart';
 import 'package:admin_ui/core/network/network_manager.dart';
 
-
-
-
 class Employee extends BaseModel<Employee> {
   int? id;
   String? firstName;
   String? lastName;
   String? email;
-  String? department;
+  String? departmentName;
 
-  Employee( 
+  Employee(
       {this.id,
       this.firstName,
       this.lastName,
       this.email,
-      this.department});
-
-  Employee.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    email = json['email'];
-    department = json['department'];
-    NetworkManager networkManager = NetworkManager();
-  }
+      this.departmentName});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -35,7 +23,7 @@ class Employee extends BaseModel<Employee> {
     data['firstName'] = firstName;
     data['lastName'] = lastName;
     data['email'] = email;
-    data['department'] = department;
+    data['departmentName'] = departmentName;
     return data;
   }
 
@@ -46,11 +34,11 @@ class Employee extends BaseModel<Employee> {
         firstName: json['firstName'],
         lastName: json['lastName'],
         email: json['email'],
-        department: json['department']);
+        departmentName: json['departmentName']);
   }
 
   @override
   String toString() {
-    return 'Employee(id: $id, firstName: $firstName, lastName: $lastName, email: $email, department: $department)';
+    return 'Employee(id: $id, firstName: $firstName, lastName: $lastName, email: $email, department: $departmentName)';
   }
 }

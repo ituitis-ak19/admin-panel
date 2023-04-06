@@ -66,107 +66,106 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (_) {
-        switch(viewModel.dataState){
-          case DataState.LOADING:
-            return Center(child: CircularProgressIndicator());
-          case DataState.ERROR:
-            return Center(child: Text("Çalışanlar listesi gösterilirken bir hata oluştu"));
-          case DataState.READY:
-            return DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Id',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+    return Observer(builder: (_) {
+      switch (viewModel.dataState) {
+        case DataState.LOADING:
+          return Center(child: CircularProgressIndicator());
+        case DataState.ERROR:
+          return Center(
+              child: Text("Çalışanlar listesi gösterilirken bir hata oluştu"));
+        case DataState.READY:
+          return DataTable(
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Id',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Ad',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Ad',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Soyad',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Soyad',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Email',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Email',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Departman',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Departman',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  '',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    '',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ),
-            ),
-          ],
-          rows: viewModel
-              .employeeList! // Loops through dataColumnText, each iteration assigning the value to element
-              .map(
-                ((element) => DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text(element.id!.toString())),
-                        DataCell(Text(element
-                            .firstName!)), //Extracting from Map element the value
-                        DataCell(Text(element.lastName!)),
-                        DataCell(Text(element.email!)),
-                        DataCell(Text(element.department!)),
-                        DataCell(Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              height: MediaQuery.of(context)
-                                                  .size
-                                                  .height,
-                                              child: EmployeeDetailView()),
-                                        );
-                                      });
-                                },
-                                icon: Icon(Icons.navigate_next))
-                          ],
-                        ))
-                      ],
-                    )),
-              )
-              .toList(),
-        );
-        }
+            ],
+            rows: viewModel
+                .employeeList! // Loops through dataColumnText, each iteration assigning the value to element
+                .map(
+                  ((element) => DataRow(
+                        cells: <DataCell>[
+                          DataCell(Text(element.id!.toString())),
+                          DataCell(Text(element
+                              .firstName!)), //Extracting from Map element the value
+                          DataCell(Text(element.lastName!)),
+                          DataCell(Text(element.email!)),
+                          DataCell(Text(element.departmentName!)),
+                          DataCell(Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.3,
+                                                height: MediaQuery.of(context)
+                                                    .size
+                                                    .height,
+                                                child: EmployeeDetailView()),
+                                          );
+                                        });
+                                  },
+                                  icon: Icon(Icons.navigate_next))
+                            ],
+                          ))
+                        ],
+                      )),
+                )
+                .toList(),
+          );
       }
-    );
+    });
   }
 }

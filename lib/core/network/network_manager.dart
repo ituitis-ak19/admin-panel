@@ -13,6 +13,9 @@ class NetworkManager {
     try {
       res =
           await http.post(Uri.parse(url), body: data, headers: <String, String>{
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
         'Authorization': token ?? "",
       });
       return handleResponse(res, baseModel);
@@ -27,7 +30,10 @@ class NetworkManager {
     ResponseModel<R> responseModel = ResponseModel();
 
     try {
-      var res = await http.get(Uri.http(url), headers: <String, String>{
+      var res =
+          await http.get(Uri.http(url, "/employee"), headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
         'Authorization': token ?? "",
       });
       return handleResponse(res, baseModel);
@@ -41,17 +47,19 @@ class NetworkManager {
 
   ResponseModel<R> handleResponse<R, T>(Response res, BaseModel<T> baseModel) {
     ResponseModel<R> result = ResponseModel();
+
     switch (res.statusCode) {
       case 200:
         if (jsonDecode(res.body) != null) {
           var jsonBody = jsonDecode(res.body);
-          result = result.fromJson(jsonBody);
 
           if (jsonBody is List) {
             result.data = jsonBody
                 .map((json) => baseModel.fromJson(json))
                 .toList()
                 .cast<T>() as R;
+
+            print(result.data.toString());
           } else {
             result.data = baseModel.fromJson(jsonBody) as R;
           }
