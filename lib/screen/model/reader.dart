@@ -9,16 +9,14 @@ import 'package:admin_ui/core/network/network_manager.dart';
 class Reader extends BaseModel<Reader> {
   int? id;
   String? name;
-  String? type;
-  String? direction;
-  String? accessLocationName;
+  int? type;
+  int? direction;
   
   Reader({
     this.id,
     this.name,
     this.type,
     this.direction,
-    this.accessLocationName,
   });
   
   
@@ -30,7 +28,6 @@ class Reader extends BaseModel<Reader> {
       'name': name,
       'type': type,
       'direction': direction,
-      'accessLocationName': accessLocationName,
     };
   }
 
@@ -38,9 +35,8 @@ class Reader extends BaseModel<Reader> {
     return Reader(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
-      type: map['type'] != null ? map['type'] as String : null,
-      direction: map['direction'] != null ? map['direction'] as String : null,
-      accessLocationName: map['accessLocationName'] != null ? map['accessLocationName'] as String : null,
+      type: map['type'] != null ? map['type'] as int : null,
+      direction: map['direction'] != null ? map['direction'] as int : null,
     );
   }
 }

@@ -137,7 +137,7 @@ class MyStatelessWidget extends StatelessWidget {
                           DataCell(Text(element.email!)),
                           DataCell(Text(element.departmentName!)),
                           DataCell(Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
                                   onPressed: () {

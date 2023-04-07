@@ -2,17 +2,17 @@
 import 'package:admin_ui/core/network/model/response_model.dart';
 import 'package:admin_ui/core/network/network_manager.dart';
 
-import '../model/employee.dart';
+import '../model/reader.dart';
 
-class EmployeeService {
+class ReaderService {
   NetworkManager networkManager;
-  EmployeeService({
+  ReaderService({
     required this.networkManager,
   });
 
-  Future<List<Employee>?> getEmployees() async {
-    ResponseModel<List<Employee>> result = await networkManager
-        .getData<List<Employee>, Employee>("127.0.0.1:8080", "/employee", Employee(), null);
+  Future<List<Reader>?> getReaders() async {
+    ResponseModel<List<Reader>> result = await networkManager
+        .getData<List<Reader>, Reader>("127.0.0.1:8080", "/reader", Reader(), null);
     return result.data;
   }
 }

@@ -26,12 +26,12 @@ class NetworkManager {
   }
 
   Future<ResponseModel<R>> getData<R, T>(
-      String url, BaseModel<T> baseModel, String? token) async {
+      String url, String path, BaseModel<T> baseModel, String? token) async {
     ResponseModel<R> responseModel = ResponseModel();
 
     try {
       var res =
-          await http.get(Uri.http(url, "/employee"), headers: <String, String>{
+          await http.get(Uri.http(url, path), headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': '*/*',
         'Authorization': token ?? "",
