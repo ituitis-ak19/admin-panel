@@ -1,5 +1,11 @@
 import 'package:admin_ui/screen/view/site_detail_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import '../../core/constant/enum/enums.dart';
+import '../../core/network/network_manager.dart';
+import '../service/site_service.dart';
+import '../viewModel/site_view_model.dart';
 
 void main() => runApp(const SiteView());
 
@@ -10,6 +16,9 @@ class SiteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SiteViewModel viewModel =
+        SiteViewModel(SiteService(networkManager: NetworkManager()));
+    viewModel.init();
     return MaterialApp(
       title: _title,
       home: Scaffold(
@@ -33,15 +42,17 @@ class SiteView extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.05,
                     child: TextButton(
                         onPressed: null,
-                        child: Text("Yeni Oluştur", style: TextStyle(color: Colors.white)),
-                        style:
-                            TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
+                        child: Text("Yeni Oluştur",
+                            style: TextStyle(color: Colors.white)),
+                        style: TextButton.styleFrom(
+                            backgroundColor:
+                                Color.fromARGB(255, 55, 107, 251))),
                   ),
                 ],
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
-                  child: const MyStatelessWidget()),
+                  child: MyStatelessWidget(viewModel: viewModel)),
             ],
           ),
         ),
@@ -51,118 +62,82 @@ class SiteView extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({super.key});
+  final SiteViewModel viewModel;
+  MyStatelessWidget({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Id',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Ad',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              '',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-      ],
-      rows: <DataRow>[
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(  
-              children: [IconButton(onPressed: (){
-                showDialog(context: context, builder: (BuildContext context){
-                  return AlertDialog(
-                    content: Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height*0.22,
-                      child: SiteDetailView()),
-                  );
-                });
-              }, icon: Icon(Icons.navigate_next))],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        )
-      ],
-    );
+    return Observer(builder: (_) {
+      switch (viewModel.dataState) {
+        case DataState.LOADING:
+          return Center(child: CircularProgressIndicator());
+        case DataState.ERROR:
+          return Center(
+              child: Text("Alanlar görüntülenirken bir hata oluştu"));
+        case DataState.READY:
+          return DataTable(
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Id',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Ad',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    '',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+            ],
+            rows: viewModel
+                .siteList! // Loops through dataColumnText, each iteration assigning the value to element
+                .map(
+                  ((element) => DataRow(cells: <DataCell>[
+                        DataCell(Text(element.id!.toString())),
+                        DataCell(Text(element.name!.toString())),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.22,
+                                              child: SiteDetailView()),
+                                        );
+                                      });
+                                },
+                                icon: Icon(Icons.navigate_next))
+                          ],
+                        ))
+                      ])),
+                )
+                .toList(),
+          );
+      }
+    });
   }
 }

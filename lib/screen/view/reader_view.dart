@@ -73,7 +73,7 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         case DataState.ERROR:
           return Center(
-              child: Text("Okuyucu listesi gösterilirken bir hata oluştu"));
+              child: Text("Okuyucular görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return DataTable(
             columns: const <DataColumn>[
@@ -128,6 +128,7 @@ class MyStatelessWidget extends StatelessWidget {
                         DataCell(Text(element.type!.toString())),
                         DataCell(Text(element.direction!.toString())),
                         DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
                                 onPressed: () {
@@ -150,7 +151,6 @@ class MyStatelessWidget extends StatelessWidget {
                                 },
                                 icon: Icon(Icons.navigate_next))
                           ],
-                          mainAxisAlignment: MainAxisAlignment.center,
                         ))
                       ])),
                 )

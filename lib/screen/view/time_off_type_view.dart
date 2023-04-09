@@ -1,5 +1,11 @@
+import 'package:admin_ui/screen/service/time_off_type_service.dart';
 import 'package:admin_ui/screen/view/time_off_type_detail_view.dart';
+import 'package:admin_ui/screen/viewModel/time_off_type_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import '../../core/constant/enum/enums.dart';
+import '../../core/network/network_manager.dart';
 
 void main() => runApp(const TimeOffTypeView());
 
@@ -10,6 +16,9 @@ class TimeOffTypeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TimeOffTypeViewModel viewModel =
+        TimeOffTypeViewModel(TimeOffTypeService(networkManager: NetworkManager()));
+    viewModel.init();
     return MaterialApp(
       title: _title,
       home: Scaffold(
@@ -41,7 +50,7 @@ class TimeOffTypeView extends StatelessWidget {
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
-                  child: const MyStatelessWidget()),
+                  child: MyStatelessWidget(viewModel: viewModel,)),
             ],
           ),
         ),
@@ -51,133 +60,91 @@ class TimeOffTypeView extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({super.key});
+  final TimeOffTypeViewModel viewModel;
+  MyStatelessWidget({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Id',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Ad',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Açıklama',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              '',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ),
-      ],
-      rows: <DataRow>[
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(  
-              children: [IconButton(onPressed: (){
-                showDialog(context: context, builder: (BuildContext context){
-                  return AlertDialog(
-                    content: Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height*0.22,
-                      child: TimeOffTypeDetailView()),
-                  );
-                });
-              }, icon: Icon(Icons.navigate_next))],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('1')),
-            DataCell(Text('Bilal')),
-            DataCell(Text('Ak')),
-            DataCell(Row(
-              children: [Icon(Icons.navigate_next)],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
-          ],
-        )
-      ],
-    );
+    return Observer(builder: (_) {
+      switch (viewModel.dataState) {
+        case DataState.LOADING:
+          return Center(child: CircularProgressIndicator());
+        case DataState.ERROR:
+          return Center(
+              child: Text("İzin tipleri görüntülenirken bir hata oluştu"));
+        case DataState.READY:
+          return DataTable(
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Id',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Ad',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Açıklama',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    '',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+            ],
+            rows: viewModel
+                .timeOffTypeList! // Loops through dataColumnText, each iteration assigning the value to element
+                .map(
+                  ((element) => DataRow(cells: <DataCell>[
+                        DataCell(Text(element.id!.toString())),
+                        DataCell(Text(element.name!.toString())), //Extracting from Map element the value
+                        DataCell(Text(element.description!.toString())),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.3,
+                                              child: TimeOffTypeDetailView()),
+                                        );
+                                      });
+                                },
+                                icon: Icon(Icons.navigate_next))
+                          ]
+                        ))
+                      ])),
+                )
+                .toList(),
+          );
+      }
+    });
   }
 }

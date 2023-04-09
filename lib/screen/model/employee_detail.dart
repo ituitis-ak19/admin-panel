@@ -16,7 +16,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   bool? isManager;
   int? remainingTimeOffDays;
   String? gender;
-  List<Site>? accessList;
+  List<Site>? siteList;
 
   EmployeeDetail({
     this.id,
@@ -29,7 +29,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
     this.isManager,
     this.remainingTimeOffDays,
     this.gender,
-    this.accessList
+    this.siteList
   });
  
   @override
@@ -45,7 +45,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       'isManager': isManager,
       'remainingTimeOffDays': remainingTimeOffDays,
       'gender': gender,
-      'accessList': accessList!.map((x) => x.toJson()).toList(),
+      'siteList': siteList!.map((x) => x.toJson()).toList(),
     };
   }
 
@@ -62,8 +62,8 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       isManager: map['isManager'] != null ? map['isManager'] as bool : null,
       remainingTimeOffDays: map['remainingTimeOffDays'] != null ? map['remainingTimeOffDays'] as int : null,
       gender: map['gender'] != null ? map['gender'] as String : null,
-      accessList: map['accessList'] != null
-          ? List<Site>.from(map['accessList']
+      siteList: map['siteList'] != null
+          ? List<Site>.from(map['siteList']
               .map((json) => Site().fromJson(json))
               .toList())
           : null,

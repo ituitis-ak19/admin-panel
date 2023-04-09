@@ -72,7 +72,7 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         case DataState.ERROR:
           return Center(
-              child: Text("Giriş noktaları gösterilirken bir hata oluştu"));
+              child: Text("Giriş noktaları görüntülenirken bir hata oluştu"));
         case DataState.READY:
       return DataTable(
         columns: const <DataColumn>[

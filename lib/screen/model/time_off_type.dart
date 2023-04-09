@@ -6,12 +6,12 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:admin_ui/core/base/base_model.dart';
 import 'package:admin_ui/core/network/network_manager.dart';
 
-class TimeOff extends BaseModel<TimeOff> {
+class TimeOffType extends BaseModel<TimeOffType> {
   int? id;
   String? name;
   String? description;
   
-  TimeOff({
+  TimeOffType({
     this.id,
     this.name,
     this.description
@@ -27,8 +27,8 @@ class TimeOff extends BaseModel<TimeOff> {
   }
 
   @override
-  TimeOff fromJson(Map<String, dynamic> map) {
-    return TimeOff(
+  TimeOffType fromJson(Map<String, dynamic> map) {
+    return TimeOffType(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
       description: map['description'] != null ? map['description'] as String : null,

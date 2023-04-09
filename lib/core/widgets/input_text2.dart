@@ -10,7 +10,8 @@ class ProfileCard extends StatelessWidget {
       {super.key,
       this.tittle,
       this.icon,
-      required this.textEditingController});
+      required this.textEditingController
+      });
 
   @override
   Widget build(BuildContext context) {

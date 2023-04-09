@@ -74,7 +74,7 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         case DataState.ERROR:
           return Center(
-              child: Text("Çalışanlar listesi gösterilirken bir hata oluştu"));
+              child: Text("Departmanlar görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return DataTable(
             columns: const <DataColumn>[

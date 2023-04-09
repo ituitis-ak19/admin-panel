@@ -72,7 +72,7 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         case DataState.ERROR:
           return Center(
-              child: Text("Çalışanlar listesi gösterilirken bir hata oluştu"));
+              child: Text("Çalışanlar görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return DataTable(
             columns: const <DataColumn>[
@@ -131,8 +131,7 @@ class MyStatelessWidget extends StatelessWidget {
                   ((element) => DataRow(
                         cells: <DataCell>[
                           DataCell(Text(element.id!.toString())),
-                          DataCell(Text(element
-                              .firstName!)), //Extracting from Map element the value
+                          DataCell(Text(element.firstName!)), //Extracting from Map element the value
                           DataCell(Text(element.lastName!)),
                           DataCell(Text(element.email!)),
                           DataCell(Text(element.departmentName!)),
@@ -153,7 +152,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                 height: MediaQuery.of(context)
                                                     .size
                                                     .height,
-                                                child: EmployeeDetailView()),
+                                                child: EmployeeDetailView(id: element.id!)),
                                           );
                                         });
                                   },
