@@ -90,7 +90,7 @@ class MyStatelessWidget extends StatelessWidget {
                         flex: 5,
                         child: ProfileCard(
                             icon: Icon(Icons.person),
-                            tittle: "Secret",
+                            tittle: "Kimlik Numarası",
                             textEditingController:
                                 viewModel.textEditingControllerList[3])),
                   ],
@@ -164,10 +164,10 @@ class MyStatelessWidget extends StatelessWidget {
                                     title: Text("Yönetici"),
                                     value: true,
                                     groupValue:
-                                        viewModel.employeeDetail!.isManager,
-                                    onChanged: (value) {
-                                      viewModel.changeIsManager();
-                                    }),
+                                        viewModel.isManagerObservable,
+                                    onChanged: (value) =>
+                                      viewModel.changeIsManager(value!)
+                                    ),
                               ),
                             ),
                             Expanded(
@@ -178,10 +178,10 @@ class MyStatelessWidget extends StatelessWidget {
                                     title: Text("Çalışan"),
                                     value: false,
                                     groupValue:
-                                        viewModel.employeeDetail!.isManager,
-                                    onChanged: (value) {
-                                      viewModel.changeIsManager();
-                                    }),
+                                        viewModel.isManagerObservable,
+                                    onChanged: (value) =>
+                                      viewModel.changeIsManager(value!)
+                                    ),
                               ),
                             ),
                           ],
@@ -272,7 +272,7 @@ class MyStatelessWidget extends StatelessWidget {
                                           child: Text(items.name!),
                                         );
                                       }).toList(),
-                                      onChanged: null),
+                                      onChanged: (value) => viewModel.changeSiteId(value!)),
                                 ),
                               ),
                               Expanded(
@@ -282,7 +282,7 @@ class MyStatelessWidget extends StatelessWidget {
                                         EdgeInsets.only(left: 4.0, bottom: 2.0),
                                     height: 50,
                                     child: TextButton(
-                                        onPressed: null,
+                                        onPressed: () => viewModel.addSite(viewModel.siteId!),
                                         child: Text("Ekle",
                                             style:
                                                 TextStyle(color: Colors.white)),
@@ -301,7 +301,7 @@ class MyStatelessWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.22,
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: SingleChildScrollView(
-                    child: DataTable(
+                    child: viewModel.siteListDataState == DataState.READY ? DataTable(
                       columns: const <DataColumn>[
                         DataColumn(
                           label: Expanded(
@@ -337,18 +337,18 @@ class MyStatelessWidget extends StatelessWidget {
                                     DataCell(
                                         Text(element.name!)), //Extracting fro
                                     DataCell(Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         IconButton(
-                                            onPressed: null,
+                                            onPressed: ()=> viewModel.removeSite(element.id!),
                                             icon: Icon(Icons.close))
                                       ],
-                                      mainAxisAlignment: MainAxisAlignment.end,
                                     ))
                                   ],
                                 )),
                           )
                           .toList(),
-                    ),
+                    ): Center(child: CircularProgressIndicator())
                   ),
                 ),
                 Row(
@@ -360,7 +360,7 @@ class MyStatelessWidget extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.04,
                         width: MediaQuery.of(context).size.width * 0.05,
                         child: TextButton(
-                            onPressed: null,
+                            onPressed: () => viewModel.updateEmployee(),
                             child: Text("Kaydet",
                                 style: TextStyle(color: Colors.white)),
                             style: TextButton.styleFrom(

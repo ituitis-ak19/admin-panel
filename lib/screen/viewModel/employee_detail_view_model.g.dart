@@ -73,6 +73,22 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
+  late final _$siteListDataStateAtom = Atom(
+      name: '_EmployeeDetailViewModelBase.siteListDataState', context: context);
+
+  @override
+  DataState get siteListDataState {
+    _$siteListDataStateAtom.reportRead();
+    return super.siteListDataState;
+  }
+
+  @override
+  set siteListDataState(DataState value) {
+    _$siteListDataStateAtom.reportWrite(value, super.siteListDataState, () {
+      super.siteListDataState = value;
+    });
+  }
+
   late final _$isManagerObservableAtom = Atom(
       name: '_EmployeeDetailViewModelBase.isManagerObservable',
       context: context);
@@ -90,6 +106,22 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
+  late final _$siteIdAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.siteId', context: context);
+
+  @override
+  int? get siteId {
+    _$siteIdAtom.reportRead();
+    return super.siteId;
+  }
+
+  @override
+  set siteId(int? value) {
+    _$siteIdAtom.reportWrite(value, super.siteId, () {
+      super.siteId = value;
+    });
+  }
+
   late final _$initAsyncAction =
       AsyncAction('_EmployeeDetailViewModelBase.init', context: context);
 
@@ -98,15 +130,51 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     return _$initAsyncAction.run(() => super.init());
   }
 
+  late final _$addSiteAsyncAction =
+      AsyncAction('_EmployeeDetailViewModelBase.addSite', context: context);
+
+  @override
+  Future addSite(int value) {
+    return _$addSiteAsyncAction.run(() => super.addSite(value));
+  }
+
+  late final _$removeSiteAsyncAction =
+      AsyncAction('_EmployeeDetailViewModelBase.removeSite', context: context);
+
+  @override
+  Future removeSite(int value) {
+    return _$removeSiteAsyncAction.run(() => super.removeSite(value));
+  }
+
+  late final _$updateEmployeeAsyncAction = AsyncAction(
+      '_EmployeeDetailViewModelBase.updateEmployee',
+      context: context);
+
+  @override
+  Future updateEmployee() {
+    return _$updateEmployeeAsyncAction.run(() => super.updateEmployee());
+  }
+
   late final _$_EmployeeDetailViewModelBaseActionController =
       ActionController(name: '_EmployeeDetailViewModelBase', context: context);
 
   @override
-  dynamic changeIsManager() {
+  dynamic changeIsManager(bool value) {
     final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
         .startAction(name: '_EmployeeDetailViewModelBase.changeIsManager');
     try {
-      return super.changeIsManager();
+      return super.changeIsManager(value);
+    } finally {
+      _$_EmployeeDetailViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeSiteId(int value) {
+    final _$actionInfo = _$_EmployeeDetailViewModelBaseActionController
+        .startAction(name: '_EmployeeDetailViewModelBase.changeSiteId');
+    try {
+      return super.changeSiteId(value);
     } finally {
       _$_EmployeeDetailViewModelBaseActionController.endAction(_$actionInfo);
     }
@@ -119,7 +187,9 @@ dataState: ${dataState},
 employeeDetail: ${employeeDetail},
 departmentList: ${departmentList},
 siteList: ${siteList},
-isManagerObservable: ${isManagerObservable}
+siteListDataState: ${siteListDataState},
+isManagerObservable: ${isManagerObservable},
+siteId: ${siteId}
     ''';
   }
 }

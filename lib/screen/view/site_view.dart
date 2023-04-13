@@ -126,7 +126,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                       .size
                                                       .height *
                                                   0.22,
-                                              child: SiteDetailView()),
+                                              child: SiteDetailView(id: element.id!)),
                                         );
                                       });
                                 },

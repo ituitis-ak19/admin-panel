@@ -1,4 +1,5 @@
 import 'package:admin_ui/screen/view/access_location_view.dart';
+import 'package:admin_ui/screen/view/asset_view.dart';
 import 'package:admin_ui/screen/view/department_view.dart';
 import 'package:admin_ui/screen/view/reader_view.dart';
 import 'package:admin_ui/screen/view/site_view.dart';
@@ -37,6 +38,9 @@ class _MainViewState extends State<MainView> {
     ),
     Center(
       child: TimeOffTypeView(),
+    ),
+    Center(
+      child: AssetView(),
     )
   ];
 
@@ -82,6 +86,10 @@ class _MainViewState extends State<MainView> {
             SideNavigationBarItem(
               icon: Icons.tour,
               label: 'İzin Tipleri',
+            ),
+            SideNavigationBarItem(
+              icon: Icons.computer,
+              label: 'Zimmetli Ürünler',
             ),
           ],
           onTap: (index) {

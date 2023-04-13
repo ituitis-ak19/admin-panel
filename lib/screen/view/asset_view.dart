@@ -1,23 +1,24 @@
+import 'package:admin_ui/screen/service/asset_service.dart';
+import 'package:admin_ui/screen/view/asset_detail_view.dart';
 import 'package:admin_ui/core/network/network_manager.dart';
-import 'package:admin_ui/screen/view/reader_detail_view.dart';
+import 'package:admin_ui/core/constant/enum/enums.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../core/constant/enum/enums.dart';
-import '../service/reader_service.dart';
-import '../viewModel/reader_view_model.dart';
+import '../viewModel/asset_view_model.dart';
 
-void main() => runApp(const ReaderView());
+void main() => runApp(const AssetView());
 
-class ReaderView extends StatelessWidget {
-  const ReaderView({super.key});
+class AssetView extends StatelessWidget {
+  const AssetView({super.key});
 
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
-    ReaderViewModel viewModel =
-        ReaderViewModel(ReaderService(networkManager: NetworkManager()));
+    AssetViewModel viewModel = AssetViewModel(
+        AssetService(networkManager: NetworkManager()));
     viewModel.init();
     return MaterialApp(
       title: _title,
@@ -62,7 +63,7 @@ class ReaderView extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  final ReaderViewModel viewModel;
+  final AssetViewModel viewModel;
   MyStatelessWidget({super.key, required this.viewModel});
 
   @override
@@ -73,7 +74,7 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         case DataState.ERROR:
           return Center(
-              child: Text("Okuyucular görüntülenirken bir hata oluştu"));
+              child: Text("Zimmetli ürünler görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return DataTable(
             columns: const <DataColumn>[
@@ -96,7 +97,7 @@ class MyStatelessWidget extends StatelessWidget {
               DataColumn(
                 label: Expanded(
                   child: Text(
-                    'Tip',
+                    'Açıklama',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
@@ -104,7 +105,7 @@ class MyStatelessWidget extends StatelessWidget {
               DataColumn(
                 label: Expanded(
                   child: Text(
-                    'Yön',
+                    'Veriliş Tarihi',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
@@ -119,40 +120,41 @@ class MyStatelessWidget extends StatelessWidget {
               ),
             ],
             rows: viewModel
-                .readerList! // Loops through dataColumnText, each iteration assigning the value to element
+                .assetList! // Loops through dataColumnText, each iteration assigning the value to element
                 .map(
-                  ((element) => DataRow(cells: <DataCell>[
-                        DataCell(Text(element.id!.toString())),
-                        DataCell(Text(element.name!
-                            .toString())), //Extracting from Map element the value
-                        DataCell(Text(element.type!.toString())),
-                        DataCell(Text(element.direction!.toString())),
-                        DataCell(Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.3,
-                                              child: ReaderDetailView(id: element.id!)),
-                                        );
-                                      });
-                                },
-                                icon: Icon(Icons.navigate_next))
-                          ],
-                        ))
-                      ])),
+                  ((element) => DataRow(
+                        cells: <DataCell>[
+                          DataCell(Text(element.id!.toString())),
+                          DataCell(Text(element.name!)), //Extracting from Map element the value
+                          DataCell(Text(element.description!)),
+                          DataCell(Text(element.dateOfIssue!)),
+                          DataCell(Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.3,
+                                                child: AssetDetailView(id: element.id!)),
+                                          );
+                                        });
+                                  },
+                                  icon: Icon(Icons.navigate_next))
+                            ],
+                          ))
+                        ],
+                      )),
                 )
                 .toList(),
           );

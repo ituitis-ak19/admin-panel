@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'package:admin_ui/screen/model/site.dart';
+
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import 'package:admin_ui/core/base/base_model.dart';
 import 'package:admin_ui/core/network/network_manager.dart';
+import 'package:admin_ui/screen/model/site.dart';
 
 class EmployeeDetail extends BaseModel<EmployeeDetail> {
   int? id;
@@ -17,6 +20,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   int? remainingTimeOffDays;
   String? gender;
   List<Site>? siteList;
+  int? identityNum;
 
   EmployeeDetail({
     this.id,
@@ -29,7 +33,8 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
     this.isManager,
     this.remainingTimeOffDays,
     this.gender,
-    this.siteList
+    this.siteList,
+    this.identityNum
   });
  
   @override
@@ -41,11 +46,12 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       'email': email,
       'birthDate': birthDate,
       'startDate': startDate,
-      'department': departmentId,
+      'departmentId': departmentId,
       'isManager': isManager,
       'remainingTimeOffDays': remainingTimeOffDays,
       'gender': gender,
-      'siteList': siteList!.map((x) => x.toJson()).toList(),
+      'siteIdList': siteList!.map((x) => x.id).toList(),
+      'identityNum' : identityNum
     };
   }
 
@@ -58,7 +64,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       email: map['email'] != null ? map['email'] as String : null,
       birthDate: map['birthDate'] != null ? map['birthDate'] as String : null,
       startDate: map['startDate'] != null ? map['startDate'] as String : null,
-      departmentId: map['department'] != null ? map['department'] as int : null,
+      departmentId: map['departmentId'] != null ? map['departmentId'] as int : null,
       isManager: map['isManager'] != null ? map['isManager'] as bool : null,
       remainingTimeOffDays: map['remainingTimeOffDays'] != null ? map['remainingTimeOffDays'] as int : null,
       gender: map['gender'] != null ? map['gender'] as String : null,
@@ -67,6 +73,42 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
               .map((json) => Site().fromJson(json))
               .toList())
           : null,
+      identityNum: map['identityNum'] != null ? map['identityNum'] as int : null,
     );
+  }
+
+  @override
+  bool operator ==(covariant EmployeeDetail other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.firstName == firstName &&
+      other.lastName == lastName &&
+      other.email == email &&
+      other.birthDate == birthDate &&
+      other.startDate == startDate &&
+      other.departmentId == departmentId &&
+      other.isManager == isManager &&
+      other.remainingTimeOffDays == remainingTimeOffDays &&
+      other.gender == gender &&
+      listEquals(other.siteList, siteList) &&
+      other.identityNum == identityNum;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      firstName.hashCode ^
+      lastName.hashCode ^
+      email.hashCode ^
+      birthDate.hashCode ^
+      startDate.hashCode ^
+      departmentId.hashCode ^
+      isManager.hashCode ^
+      remainingTimeOffDays.hashCode ^
+      gender.hashCode ^
+      siteList.hashCode ^
+      identityNum.hashCode;
   }
 }

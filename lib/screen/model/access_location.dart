@@ -8,11 +8,13 @@ import 'package:admin_ui/core/network/network_manager.dart';
 
 class AccessLocation extends BaseModel<AccessLocation> {
   int? id;
+  String? name;
   int? type;
   String? siteName;
   
   AccessLocation({
     this.id,
+    this.name,
     this.type,
     this.siteName
   });
@@ -22,6 +24,7 @@ class AccessLocation extends BaseModel<AccessLocation> {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
+      'name': name,
       'type': type,
       'siteName': siteName,
     };
@@ -31,6 +34,7 @@ class AccessLocation extends BaseModel<AccessLocation> {
    AccessLocation fromJson(Map<String, dynamic> map) {
     return AccessLocation(
       id: map['id'] != null ? map['id'] as int : null,
+      name: map['name'] != null ? map['name'] as String : null,
       type: map['type'] != null ? map['type'] as int : null,
       siteName: map['siteName'] != null ? map['siteName'] as String : null,
     );

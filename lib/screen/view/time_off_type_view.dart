@@ -133,7 +133,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                       .size
                                                       .height *
                                                   0.3,
-                                              child: TimeOffTypeDetailView()),
+                                              child: TimeOffTypeDetailView(id: element.id!)),
                                         );
                                       });
                                 },

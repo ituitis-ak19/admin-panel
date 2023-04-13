@@ -30,4 +30,16 @@ class Site extends BaseModel<Site> {
       name: map['name'] != null ? map['name'] as String : null,
     );
   }
+
+  @override
+  bool operator ==(covariant Site other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.name == name;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
 }

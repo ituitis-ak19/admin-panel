@@ -32,9 +32,15 @@ abstract class _EmployeeDetailViewModelBase with Store {
 
   @observable
   List<Site>? siteList;
+  
+  @observable
+  DataState siteListDataState = DataState.READY;
 
   @observable
   bool? isManagerObservable;
+
+  @observable
+  int? siteId;
 
   _EmployeeDetailViewModelBase(this.employeeService, this.id, this.departmentService, this.siteService);
 
@@ -53,7 +59,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.firstName));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.lastName));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.email));
-    textEditingControllerList.add(TextEditingController(text: employeeDetail!.email));
+    textEditingControllerList.add(TextEditingController(text: employeeDetail!.identityNum.toString()));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.birthDate));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.startDate));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.remainingTimeOffDays.toString()));
@@ -66,9 +72,46 @@ abstract class _EmployeeDetailViewModelBase with Store {
   }
 
   @action
-  changeIsManager(){
-    isManagerObservable = false;
+  changeIsManager(bool value){
+    isManagerObservable = value;
   }
   
+  @action
+  changeSiteId(int value){
+    siteId = value;
+  }
+
+  @action
+  addSite(int value) async{
+    siteListDataState = DataState.LOADING;
+    Site? site = await siteService.getSiteById(value);
+    if(site != null){
+      if(!employeeDetail!.siteList!.contains(site)){
+        employeeDetail!.siteList!.add(site);
+      } 
+    }
+    siteListDataState = DataState.READY;
+  }
+
+  @action
+  removeSite(int value) async{
+    siteListDataState = DataState.LOADING;
+    employeeDetail!.siteList!.removeWhere((element) => element.id == value);
+    siteListDataState = DataState.READY;
+  }
+
+  @action
+  updateEmployee() async{
+    employeeDetail!.firstName = textEditingControllerList[0].text;
+    employeeDetail!.lastName = textEditingControllerList[1].text;
+    employeeDetail!.email = textEditingControllerList[2].text;
+    employeeDetail!.identityNum = int.parse(textEditingControllerList[3].text);
+    employeeDetail!.birthDate = textEditingControllerList[4].text;
+    employeeDetail!.startDate = textEditingControllerList[5].text;
+    employeeDetail!.remainingTimeOffDays = int.parse(textEditingControllerList[6].text);
+    employeeDetail!.isManager = isManagerObservable;
+
+    employeeService.updateEmployee(employeeDetail!);
+  }
   
 }

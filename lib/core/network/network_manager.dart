@@ -45,9 +45,27 @@ class NetworkManager {
     return responseModel;
   }
 
+  Future<ResponseModel<R>> putData<R, T>(
+      String url, String path, BaseModel<T> baseModel, String? data, String? token) async {
+    Response res;
+
+    try {
+      res =
+          await http.put(Uri.http(url, path), body: data, headers: <String, String>{
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'Authorization': token ?? "",
+      });
+      return handleResponse(res, baseModel);
+    } catch (e) {
+      print(e);
+    }
+    return ResponseModel<R>();
+  }
+
   ResponseModel<R> handleResponse<R, T>(Response res, BaseModel<T> baseModel) {
     ResponseModel<R> result = ResponseModel();
-
     switch (res.statusCode) {
       case 200:
         if (jsonDecode(res.body) != null) {
@@ -58,12 +76,10 @@ class NetworkManager {
                 .map((json) => baseModel.fromJson(json))
                 .toList()
                 .cast<T>() as R;
-
-            print(result.data.toString());
           } else {
             result.data = baseModel.fromJson(jsonBody) as R;
           }
-
+          print(result.data.toString());
           //result.data =
           //  resultList.map((json) => baseModel.fromJson(json)).toList() as R;
         } else {

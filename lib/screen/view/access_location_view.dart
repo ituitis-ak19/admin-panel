@@ -87,6 +87,14 @@ class MyStatelessWidget extends StatelessWidget {
           DataColumn(
             label: Expanded(
               child: Text(
+                'Ad',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Text(
                 'Tip',
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
@@ -114,6 +122,7 @@ class MyStatelessWidget extends StatelessWidget {
             .map(
               ((element) => DataRow(cells: <DataCell>[
                     DataCell(Text(element.id!.toString())),
+                    DataCell(Text(element.name!)),
                     DataCell(Text(element.type!.toString())), //Extracting from Map element the value
                     DataCell(Text(element.siteName!)),
                     DataCell(Row(
@@ -132,7 +141,7 @@ class MyStatelessWidget extends StatelessWidget {
                                           height:
                                               MediaQuery.of(context).size.height *
                                                   0.3,
-                                          child: AccessLocationDetailView()),
+                                          child: AccessLocationDetailView(id: element.id!)),
                                     );
                                   });
                             },

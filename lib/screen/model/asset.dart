@@ -6,42 +6,37 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:admin_ui/core/base/base_model.dart';
 import 'package:admin_ui/core/network/network_manager.dart';
 
-class AccessLocationDetail extends BaseModel<AccessLocationDetail> {
+class Asset extends BaseModel<Asset> {
   int? id;
   String? name;
-  int? type;
-  int? siteId;
-  String? location;
+  String? description;
+  String? dateOfIssue;
   
-  AccessLocationDetail({
+  Asset({
     this.id,
     this.name,
-    this.type,
-    this.siteId,
-    this.location
+    this.description,
+    this.dateOfIssue,
   });
-
   
-@override
+  
+  @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'type': type,
-      'siteId': siteId,
-      'location' : location
+      'description' : description,
+      'dateOfIssue' : dateOfIssue,
     };
   }
 
   @override
-   AccessLocationDetail fromJson(Map<String, dynamic> map) {
-    return AccessLocationDetail(
+  Asset fromJson(Map<String, dynamic> map) {
+    return Asset(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
-      type: map['type'] != null ? map['type'] as int : null,
-      siteId: map['siteId'] != null ? map['siteId'] as int : null,
-      location: map['location'] != null ? map['location'] as String : null, 
+      description: map['description'] != null ? map['description'] as String : null,
+      dateOfIssue: map['dateOfIssue'] != null ? map['dateOfIssue'] as String : null
     );
   }
-
 }

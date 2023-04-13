@@ -137,7 +137,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                         .size
                                                         .height *
                                                     0.5,
-                                                child: DepartmentDetailView()),
+                                                child: DepartmentDetailView(id: element.id!)),
                                           );
                                         });
                                   },

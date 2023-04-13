@@ -1,137 +1,153 @@
+import 'package:admin_ui/core/network/network_manager.dart';
 import 'package:admin_ui/core/widgets/input_text2.dart';
+import 'package:admin_ui/screen/model/access_location.dart';
+import 'package:admin_ui/screen/service/access_location_service.dart';
+import 'package:admin_ui/screen/service/reader_service.dart';
+import 'package:admin_ui/screen/viewModel/reader_detail_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../core/constant/enum/enums.dart';
 import '../../core/widgets/input_text.dart';
 
 void main() => runApp(const ReaderDetailView());
 
 class ReaderDetailView extends StatelessWidget {
-  const ReaderDetailView({super.key});
+  final int? id;
+  const ReaderDetailView({super.key, this.id});
 
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
+    ReaderDetailViewModel viewModel = ReaderDetailViewModel(ReaderService(networkManager: NetworkManager()), AccessLocationService(networkManager: NetworkManager()), id);
+    viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: const MyStatelessWidget()),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel)),
     );
   }
 }
 
-var items = [
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 4',
-  'Item 5',
-];
-
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({super.key});
+  final ReaderDetailViewModel viewModel;
+  MyStatelessWidget({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.075,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Okuyucu",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-            ),
-          ),
-          Row(
+      child: Observer(
+        builder: (_) {
+        switch (viewModel.dataState) {
+          case DataState.LOADING:
+            return Center(child: CircularProgressIndicator());
+          case DataState.ERROR:
+            return Center(
+                child: Text("Okuyucu Detayı görüntülenirken bir hata oluştu"));
+          case DataState.READY:
+          return Column(
             children: [
-              Expanded(
-                  flex: 5,
-                  child: ProfileCard(
-                      icon: Icon(Icons.person),
-                      tittle: "Okuyucu  Adı",
-                      textEditingController:
-                          TextEditingController(text: "test-name"))),
-              Expanded(
-                  flex: 5,
-                  child: ProfileCard(
-                      icon: Icon(Icons.person),
-                      tittle: "Okuyucu Tipi",
-                      textEditingController:
-                          TextEditingController(text: "test-surname"))),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                  flex: 5,
-                  child: ProfileCard(
-                      icon: Icon(Icons.person),
-                      tittle: "Okuyucu Yönü",
-                      textEditingController:
-                          TextEditingController(text: "31.31.3131"))),
-              Expanded(
-                flex: 5,
+              Container(
+                height: MediaQuery.of(context).size.height * 0.075,
+                width: MediaQuery.of(context).size.width * 0.75,
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Giriş Noktası")),
-                      DropdownButtonFormField(
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.grey)),
-                              iconColor: Theme.of(context).colorScheme.primary,
-                              prefixIcon: Icon(Icons.work)),
-                          isExpanded: true,
-                          items: items.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: null),
-                    ],
-                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Okuyucu",
+                      style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
                 ),
               ),
+              Row(
+                children: [
+                  Expanded(
+                      flex: 5,
+                      child: ProfileCard(
+                          icon: Icon(Icons.person),
+                          tittle: "Okuyucu  Adı",
+                          textEditingController:
+                              viewModel.textEditingControllerList[0])),
+                  Expanded(
+                      flex: 5,
+                      child: ProfileCard(
+                          icon: Icon(Icons.person),
+                          tittle: "Okuyucu Tipi",
+                          textEditingController:
+                              viewModel.textEditingControllerList[1])),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      flex: 5,
+                      child: ProfileCard(
+                          icon: Icon(Icons.person),
+                          tittle: "Okuyucu Yönü",
+                          textEditingController:
+                              viewModel.textEditingControllerList[2])),
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Giriş Noktası")),
+                          DropdownButtonFormField(
+                              value: viewModel.readerDetail!.accessLocationId,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(width: 1, color: Colors.grey)),
+                                  iconColor: Theme.of(context).colorScheme.primary,
+                                  prefixIcon: Icon(Icons.work)),
+                              isExpanded: true,
+                              items: viewModel.accessLocationList!.map((AccessLocation items) {
+                                return DropdownMenuItem(
+                                  value: items.id,
+                                  child: Text(items.name!),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                            viewModel.readerDetail!.accessLocationId = value;}),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                          height: MediaQuery.of(context).size.height * 0.04,
+                          width: MediaQuery.of(context).size.width * 0.05,
+                          child: TextButton(
+                              onPressed: ()=>viewModel.updateReader(),
+                              child: Text("Kaydet", style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                          height: MediaQuery.of(context).size.height * 0.04,
+                          width: MediaQuery.of(context).size.width * 0.05,
+                          child: TextButton(
+                              onPressed: null,
+                              child: Text("İptal", style: TextStyle(color: Colors.white)),
+                              style:
+                                  TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
+                        ),
+                ),
+              ],
+            )
             ],
-          ),
-          Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.05,
-                      child: TextButton(
-                          onPressed: null,
-                          child: Text("Kaydet", style: TextStyle(color: Colors.white)),
-                          style:
-                              TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
-                    ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      width: MediaQuery.of(context).size.width * 0.05,
-                      child: TextButton(
-                          onPressed: null,
-                          child: Text("İptal", style: TextStyle(color: Colors.white)),
-                          style:
-                              TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
-                    ),
-            ),
-          ],
-        )
-        ],
+          );
+        }}
       ),
     );
   }
