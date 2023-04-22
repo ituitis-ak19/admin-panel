@@ -7,12 +7,12 @@ import 'package:admin_ui/core/network/model/response_model.dart';
 
 class NetworkManager {
   Future<ResponseModel<R>> postData<R, T>(
-      String url, BaseModel<T> baseModel, String? data, String? token) async {
+      String url, String path, BaseModel<T> baseModel, String? data, String? token) async {
     Response res;
 
     try {
       res =
-          await http.post(Uri.parse(url), body: data, headers: <String, String>{
+          await http.post(Uri.http(url, path), body: data, headers: <String, String>{
         "Access-Control-Allow-Origin": "*",
         'Content-Type': 'application/json',
         'Accept': '*/*',
@@ -79,7 +79,6 @@ class NetworkManager {
           } else {
             result.data = baseModel.fromJson(jsonBody) as R;
           }
-          print(result.data.toString());
           //result.data =
           //  resultList.map((json) => baseModel.fromJson(json)).toList() as R;
         } else {

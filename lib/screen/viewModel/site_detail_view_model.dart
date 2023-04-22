@@ -11,6 +11,7 @@ class SiteDetailViewModel = _SiteDetailViewModelBase with _$SiteDetailViewModel;
 abstract class _SiteDetailViewModelBase with Store {
   final SiteService siteService;
   final int? id;
+  final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
   @observable
@@ -19,7 +20,7 @@ abstract class _SiteDetailViewModelBase with Store {
   @observable
   Site? siteDetail;
 
-  _SiteDetailViewModelBase(this.siteService, this.id);
+  _SiteDetailViewModelBase(this.siteService, this.id, this.buildContext);
 
   @action
   init() async {
@@ -39,7 +40,35 @@ abstract class _SiteDetailViewModelBase with Store {
 
   @action
   updateSite() async{
+    dataState = DataState.LOADING;
     siteDetail!.name = textEditingControllerList[0].text;
-    siteService.updateSite(siteDetail!);
+    Site? updatedSite;
+    if(siteDetail!.id != null){
+      updatedSite = await siteService.updateSite(siteDetail!);
+      if(updatedSite != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Alan başarıyla güncellendi")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Alan güncellenirken bir hata meydana geldi")));
+        
+    }
+    }
+    else{
+      updatedSite = await siteService.create(siteDetail!);
+      if(updatedSite != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Alan başarıyla oluşturuldu")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Alan oluştururken bir hata meydana geldi")));
+    }
+    }
+  dataState = DataState.READY;
+  return false;
   }
 }

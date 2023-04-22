@@ -29,4 +29,10 @@ class SiteService {
         .putData<Site, Site>("127.0.0.1:8080", "/site", Site(), json.encode(site.toJson()) , null);
     return result.data;
   }
+
+  Future<Site?> create(Site site) async {
+    ResponseModel<Site?> result = await networkManager
+        .postData<Site, Site>("127.0.0.1:8080", "/site", Site(), json.encode(site.toJson()) , null);
+    return result.data;
+  }
 }

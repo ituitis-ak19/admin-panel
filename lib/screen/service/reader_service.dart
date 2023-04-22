@@ -30,4 +30,10 @@ class ReaderService {
         .putData<ReaderDetail, ReaderDetail>("127.0.0.1:8080", "/reader", ReaderDetail(), json.encode(readerDetail.toJson()) , null);
     return result.data;
   }
+
+  Future<ReaderDetail?> create(ReaderDetail readerDetail) async {
+    ResponseModel<ReaderDetail?> result = await networkManager
+        .postData<ReaderDetail, ReaderDetail>("127.0.0.1:8080", "/reader", ReaderDetail(), json.encode(readerDetail.toJson()) , null);
+    return result.data;
+  }
 }

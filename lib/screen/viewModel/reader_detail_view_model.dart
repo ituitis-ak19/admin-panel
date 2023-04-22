@@ -14,6 +14,7 @@ abstract class _ReaderDetailViewModelBase with Store {
   final ReaderService readerService;
   final AccessLocationService accessLocationService;
   final int? id;
+  final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
   @observable
@@ -25,7 +26,7 @@ abstract class _ReaderDetailViewModelBase with Store {
   @observable
   ReaderDetail? readerDetail;
 
-  _ReaderDetailViewModelBase(this.readerService, this.accessLocationService, this.id);
+  _ReaderDetailViewModelBase(this.readerService, this.accessLocationService, this.id, this.buildContext);
 
   @action
   init() async {
@@ -38,8 +39,8 @@ abstract class _ReaderDetailViewModelBase with Store {
       readerDetail = await readerService.getReaderDetail(id!);
     }
     textEditingControllerList.add(TextEditingController(text: readerDetail!.name));
-    textEditingControllerList.add(TextEditingController(text: readerDetail!.type.toString()));
-    textEditingControllerList.add(TextEditingController(text: readerDetail!.direction.toString()));
+    textEditingControllerList.add(TextEditingController(text: readerDetail!.type != null ? readerDetail!.type.toString() : ""));
+    textEditingControllerList.add(TextEditingController(text: readerDetail!.direction != null ? readerDetail!.direction.toString() : ""));
 
     if (readerDetail != null) {
         dataState = DataState.READY;
@@ -50,10 +51,39 @@ abstract class _ReaderDetailViewModelBase with Store {
 
   @action
   updateReader() async{
+    dataState = DataState.LOADING;
     readerDetail!.name = textEditingControllerList[0].text;
     readerDetail!.type = int.parse(textEditingControllerList[1].text);
     readerDetail!.direction = int.parse(textEditingControllerList[2].text);
-    readerService.updateReader(readerDetail!);
+    ReaderDetail? updatedReader;
+    if(readerDetail!.id != null){
+      updatedReader = await readerService.updateReader(readerDetail!);
+      if(updatedReader != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Okuyucu başarıyla güncellendi")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Okuyucu güncellenirken bir hata meydana geldi")));
+        
+    }
+    }
+    else{
+      updatedReader = await readerService.create(readerDetail!);
+      if(updatedReader != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Okuyucu başarıyla oluşturuldu")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Okuyucu oluştururken bir hata meydana geldi")));
+    }
+    }
+  dataState = DataState.READY;
+  return false;
+    
   }
   
   

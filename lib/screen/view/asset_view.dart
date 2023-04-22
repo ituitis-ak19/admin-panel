@@ -42,7 +42,24 @@ class AssetView extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.04,
                     width: MediaQuery.of(context).size.width * 0.05,
                     child: TextButton(
-                        onPressed: null,
+                        onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.3,
+                                                child: AssetDetailView(id: null, buildContext: context)),
+                                          );
+                                        });
+                                  },
                         child: Text("Yeni Oluştur",
                             style: TextStyle(color: Colors.white)),
                         style: TextButton.styleFrom(
@@ -76,7 +93,11 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(
               child: Text("Zimmetli ürünler görüntülenirken bir hata oluştu"));
         case DataState.READY:
-          return DataTable(
+          return Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: SingleChildScrollView(
+              child: DataTable(
             columns: const <DataColumn>[
               DataColumn(
                 label: Expanded(
@@ -146,7 +167,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                         .size
                                                         .height *
                                                     0.3,
-                                                child: AssetDetailView(id: element.id!)),
+                                                child: AssetDetailView(id: element.id!, buildContext: context,)),
                                           );
                                         });
                                   },
@@ -157,7 +178,7 @@ class MyStatelessWidget extends StatelessWidget {
                       )),
                 )
                 .toList(),
-          );
+          )));
       }
     });
   }

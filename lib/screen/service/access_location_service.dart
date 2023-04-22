@@ -31,4 +31,10 @@ class AccessLocationService {
         .putData<AccessLocationDetail, AccessLocationDetail>("127.0.0.1:8080", "/accesslocation", AccessLocationDetail(), json.encode(accessLocationDetail.toJson()) , null);
     return result.data;
   }
+
+  Future<AccessLocationDetail?> create(AccessLocationDetail accessLocationDetail) async {
+    ResponseModel<AccessLocationDetail?> result = await networkManager
+        .postData<AccessLocationDetail, AccessLocationDetail>("127.0.0.1:8080", "/accesslocation", AccessLocationDetail(), json.encode(accessLocationDetail.toJson()) , null);
+    return result.data;
+  }
 }

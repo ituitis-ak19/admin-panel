@@ -15,6 +15,7 @@ abstract class _AssetDetailViewModelBase with Store {
   final AssetService assetService;
   final EmployeeService employeeService;
   final int? id;
+  final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
   @observable
@@ -26,7 +27,7 @@ abstract class _AssetDetailViewModelBase with Store {
   @observable
   List<Employee>? employeeList;
 
-  _AssetDetailViewModelBase(this.assetService, this.id, this.employeeService);
+  _AssetDetailViewModelBase(this.assetService, this.id, this.employeeService, this.buildContext);
 
   @action
   init() async {
@@ -49,10 +50,38 @@ abstract class _AssetDetailViewModelBase with Store {
 
   @action
   updateAsset() async {
+    dataState=DataState.LOADING;
     assetDetail!.name = textEditingControllerList[0].text;
     assetDetail!.dateOfIssue = textEditingControllerList[1].text;
     assetDetail!.description = textEditingControllerList[2].text;
-    assetService.updateAsset(assetDetail!);
+   AssetDetail? updatedAsset;
+    if(assetDetail!.id != null){
+      updatedAsset = await assetService.updateAsset(assetDetail!);
+      if(updatedAsset != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Zimmetli ürün başarıyla güncellendi")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Zimmetli ürün güncellenirken bir hata meydana geldi")));
+        
+    }
+    }
+    else{
+      updatedAsset = await assetService.create(assetDetail!);
+      if(updatedAsset != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Zimmetli ürün başarıyla oluşturuldu")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Zimmetli ürün oluştururken bir hata meydana geldi")));
+    }
+    }
+  dataState = DataState.READY;
+  return false;
   }
 
 }

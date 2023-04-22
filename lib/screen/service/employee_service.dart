@@ -31,4 +31,10 @@ class EmployeeService {
         .putData<EmployeeDetail, EmployeeDetail>("127.0.0.1:8080", "/employee", EmployeeDetail(), json.encode(employeeDetail.toJson()) , null);
     return result.data;
   }
+
+  Future<EmployeeDetail?> create(EmployeeDetail employeeDetail) async {
+    ResponseModel<EmployeeDetail?> result = await networkManager
+        .postData<EmployeeDetail, EmployeeDetail>("127.0.0.1:8080", "/employee", EmployeeDetail(), json.encode(employeeDetail.toJson()) , null);
+    return result.data;
+  }
 }

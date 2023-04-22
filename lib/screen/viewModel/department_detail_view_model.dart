@@ -15,6 +15,7 @@ abstract class _DepartmentDetailViewModelBase with Store {
   final DepartmentService departmentService;
   final EmployeeService employeeService;
   final int? id;
+   final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
   @observable
@@ -38,12 +39,13 @@ abstract class _DepartmentDetailViewModelBase with Store {
   @observable
   DataState employeeListDataState = DataState.READY;
 
-  _DepartmentDetailViewModelBase(this.departmentService, this.id, this.employeeService);
+  _DepartmentDetailViewModelBase(this.departmentService, this.id, this.employeeService, this.buildContext);
 
   @action
   init() async {
     if(id == null){
       departmentDetail = DepartmentDetail();
+      departmentDetail!.managersToSignIds = <int>[];
     }
     else{
       departmentDetail = await departmentService.getDepartmentDetail(id!);
@@ -95,7 +97,35 @@ abstract class _DepartmentDetailViewModelBase with Store {
   @action
   updateDepartment() async {
     departmentDetail!.name = textEditingControllerList[0].text;
-    departmentService.updateDepartment(departmentDetail!);
+    DepartmentDetail? updatedDepartment;
+    dataState = DataState.LOADING;
+    if(departmentDetail!.id != null){
+      updatedDepartment = await departmentService.updateDepartment(departmentDetail!);
+      if(updatedDepartment != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Departman başarıyla güncellendi")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Departman güncellenirken bir hata meydana geldi")));
+        
+    }
+    }
+    else{
+      updatedDepartment = await departmentService.create(departmentDetail!);
+      if(updatedDepartment != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Departman başarıyla oluşturuldu")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Departman oluştururken bir hata meydana geldi")));
+    }
+    }
+  dataState= DataState.READY;
+  return false;
   }
 
 }

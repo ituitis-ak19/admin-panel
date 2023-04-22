@@ -7,8 +7,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 
-void main() => runApp(const TimeOffTypeView());
-
 class TimeOffTypeView extends StatelessWidget {
   const TimeOffTypeView({super.key});
 
@@ -16,8 +14,8 @@ class TimeOffTypeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TimeOffTypeViewModel viewModel =
-        TimeOffTypeViewModel(TimeOffTypeService(networkManager: NetworkManager()));
+    TimeOffTypeViewModel viewModel = TimeOffTypeViewModel(
+        TimeOffTypeService(networkManager: NetworkManager()));
     viewModel.init();
     return MaterialApp(
       title: _title,
@@ -41,16 +39,37 @@ class TimeOffTypeView extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.04,
                     width: MediaQuery.of(context).size.width * 0.05,
                     child: TextButton(
-                        onPressed: null,
-                        child: Text("Yeni Oluştur", style: TextStyle(color: Colors.white)),
-                        style:
-                            TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
+                                      child: TimeOffTypeDetailView(
+                                          id: null,
+                                          buildContext: context,)),
+                                  
+                                );
+                              });
+                        },
+                        child: Text("Yeni Oluştur",
+                            style: TextStyle(color: Colors.white)),
+                        style: TextButton.styleFrom(
+                            backgroundColor:
+                                Color.fromARGB(255, 55, 107, 251))),
                   ),
                 ],
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
-                  child: MyStatelessWidget(viewModel: viewModel,)),
+                  child: MyStatelessWidget(
+                    viewModel: viewModel,
+                  )),
             ],
           ),
         ),
@@ -73,76 +92,82 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(
               child: Text("İzin tipleri görüntülenirken bir hata oluştu"));
         case DataState.READY:
-          return DataTable(
-            columns: const <DataColumn>[
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Id',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+          return Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: SingleChildScrollView(
+              child: DataTable(
+              columns: const <DataColumn>[
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Id',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Ad',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Ad',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Açıklama',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Açıklama',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    '',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      '',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-            ],
-            rows: viewModel
-                .timeOffTypeList! // Loops through dataColumnText, each iteration assigning the value to element
-                .map(
-                  ((element) => DataRow(cells: <DataCell>[
-                        DataCell(Text(element.id!.toString())),
-                        DataCell(Text(element.name!.toString())), //Extracting from Map element the value
-                        DataCell(Text(element.description!.toString())),
-                        DataCell(Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.3,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.3,
-                                              child: TimeOffTypeDetailView(id: element.id!)),
-                                        );
-                                      });
-                                },
-                                icon: Icon(Icons.navigate_next))
-                          ]
-                        ))
-                      ])),
-                )
-                .toList(),
+              ],
+              rows: viewModel
+                  .timeOffTypeList! // Loops through dataColumnText, each iteration assigning the value to element
+                  .map(
+                    ((element) => DataRow(cells: <DataCell>[
+                          DataCell(Text(element.id!.toString())),
+                          DataCell(Text(element.name!)), //Extracting from Map element the value
+                          DataCell(Text(element.description!)),
+                          DataCell(Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              content: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.3,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
+                                                  child: TimeOffTypeDetailView(
+                                                      id: element.id!,
+                                                      buildContext: context,)),
+                                            );
+                                          });
+                                    },
+                                    icon: Icon(Icons.navigate_next))
+                              ]))
+                        ])),
+                  )
+                  .toList(),
+            )),
           );
       }
     });

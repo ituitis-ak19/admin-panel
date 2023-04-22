@@ -9,10 +9,12 @@ import '../../core/constant/enum/enums.dart';
 import '../../core/widgets/input_text.dart';
 import '../model/site.dart';
 import '../viewModel/access_location_detail_view_model.dart';
+import 'main_view.dart';
 
 class AccessLocationDetailView extends StatelessWidget {
   final int? id;
-  AccessLocationDetailView({super.key, required this.id});
+  final BuildContext buildContext;
+  AccessLocationDetailView({super.key, required this.id, required this.buildContext});
 
   static const String _title = 'Flutter Code Sample';
 
@@ -21,18 +23,19 @@ class AccessLocationDetailView extends StatelessWidget {
     AccessLocationDetailViewModel viewModel = AccessLocationDetailViewModel(
         AccessLocationService(networkManager: NetworkManager()),
         SiteService(networkManager: NetworkManager()),
-        id);
+        id, context);
         viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel)),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: context,)),
     );
   }
 }
 
 class MyStatelessWidget extends StatelessWidget {
   final AccessLocationDetailViewModel viewModel;
-  MyStatelessWidget({super.key, required this.viewModel});
+  final BuildContext buildContext;
+  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,7 @@ class MyStatelessWidget extends StatelessWidget {
                         flex: 5,
                         child: ProfileCard(
                             icon: Icon(Icons.person),
-                            tittle: "Konum",
+                            tittle: "Ad",
                             textEditingController:
                                  viewModel.textEditingControllerList[0])),
                     Expanded(
@@ -126,7 +129,15 @@ class MyStatelessWidget extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.04,
                         width: MediaQuery.of(context).size.width * 0.05,
                         child: TextButton(
-                            onPressed: ()=> viewModel.updateAccessLocation(),
+                            onPressed: () async {
+                              if (await viewModel.updateAccessLocation()) {
+                                Navigator.pushReplacement(
+                                    buildContext,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            MainView(index: 2)));
+                              }
+                            },
                             child: Text("Kaydet",
                                 style: TextStyle(color: Colors.white)),
                             style: TextButton.styleFrom(
@@ -140,7 +151,7 @@ class MyStatelessWidget extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.04,
                         width: MediaQuery.of(context).size.width * 0.05,
                         child: TextButton(
-                            onPressed: null,
+                            onPressed: () => Navigator.of(buildContext).pop(),
                             child: Text("İptal",
                                 style: TextStyle(color: Colors.white)),
                             style: TextButton.styleFrom(

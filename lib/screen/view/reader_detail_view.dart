@@ -9,29 +9,30 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/widgets/input_text.dart';
-
-void main() => runApp(const ReaderDetailView());
+import 'main_view.dart';
 
 class ReaderDetailView extends StatelessWidget {
   final int? id;
-  const ReaderDetailView({super.key, this.id});
+  final BuildContext buildContext;
+  const ReaderDetailView({super.key, this.id, required this.buildContext});
 
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
-    ReaderDetailViewModel viewModel = ReaderDetailViewModel(ReaderService(networkManager: NetworkManager()), AccessLocationService(networkManager: NetworkManager()), id);
+    ReaderDetailViewModel viewModel = ReaderDetailViewModel(ReaderService(networkManager: NetworkManager()), AccessLocationService(networkManager: NetworkManager()), id, context);
     viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel)),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext,)),
     );
   }
 }
 
 class MyStatelessWidget extends StatelessWidget {
   final ReaderDetailViewModel viewModel;
-  MyStatelessWidget({super.key, required this.viewModel});
+  final BuildContext buildContext;
+  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +126,15 @@ class MyStatelessWidget extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.04,
                           width: MediaQuery.of(context).size.width * 0.05,
                           child: TextButton(
-                              onPressed: ()=>viewModel.updateReader(),
+                              onPressed: () async {
+                              if (await viewModel.updateReader()) {
+                                Navigator.pushReplacement(
+                                    buildContext,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            MainView(index: 3)));
+                              }
+                            },
                               child: Text("Kaydet", style: TextStyle(color: Colors.white)),
                               style:
                                   TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
@@ -137,7 +146,7 @@ class MyStatelessWidget extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.04,
                           width: MediaQuery.of(context).size.width * 0.05,
                           child: TextButton(
-                              onPressed: null,
+                              onPressed: () => Navigator.of(buildContext).pop(),
                               child: Text("İptal", style: TextStyle(color: Colors.white)),
                               style:
                                   TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),

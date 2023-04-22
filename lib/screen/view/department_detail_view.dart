@@ -10,37 +10,31 @@ import '../../core/network/network_manager.dart';
 import '../../core/widgets/input_text.dart';
 import '../model/employee.dart';
 import '../viewModel/department_detail_view_model.dart';
+import 'main_view.dart';
 
-void main() => runApp(const DepartmentDetailView());
 
 class DepartmentDetailView extends StatelessWidget {
   final int? id;
-  const DepartmentDetailView({super.key, this.id});
+  final BuildContext buildContext;
+  const DepartmentDetailView({super.key, this.id, required this.buildContext});
 
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
-    DepartmentDetailViewModel viewModel = DepartmentDetailViewModel(DepartmentService(networkManager: NetworkManager()), id, EmployeeService(networkManager: NetworkManager()));
+    DepartmentDetailViewModel viewModel = DepartmentDetailViewModel(DepartmentService(networkManager: NetworkManager()), id, EmployeeService(networkManager: NetworkManager()), context);
     viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel)),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext,)),
     );
   }
 }
 
-var items = [
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 4',
-  'Item 5',
-];
-
 class MyStatelessWidget extends StatelessWidget {
   final DepartmentDetailViewModel viewModel;
-  MyStatelessWidget({super.key, required this.viewModel});
+  final BuildContext buildContext;
+  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +154,9 @@ class MyStatelessWidget extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.all(4.0),
-                height: MediaQuery.of(context).size.height * 0.03,
+                height: MediaQuery.of(context).size.height * 0.032,
                 width: MediaQuery.of(context).size.width * 0.75,
-                child: Text("İmzalayacak Yöneticiler",
+                child: Text("İzin İsteğini Onaylaması Gereken Yöneticiler",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               Container(
@@ -228,7 +222,15 @@ class MyStatelessWidget extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.04,
                           width: MediaQuery.of(context).size.width * 0.05,
                           child: TextButton(
-                              onPressed: ()=> viewModel.updateDepartment(),
+                              onPressed: () async {
+                              if (await viewModel.updateDepartment()) {
+                                Navigator.pushReplacement(
+                                    buildContext,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            MainView(index: 4)));
+                              }
+                            },
                               child: Text("Kaydet", style: TextStyle(color: Colors.white)),
                               style:
                                   TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),
@@ -240,7 +242,7 @@ class MyStatelessWidget extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.04,
                           width: MediaQuery.of(context).size.width * 0.05,
                           child: TextButton(
-                              onPressed: null,
+                              onPressed: () => Navigator.of(buildContext).pop(),
                               child: Text("İptal", style: TextStyle(color: Colors.white)),
                               style:
                                   TextButton.styleFrom(backgroundColor: Color.fromARGB(255, 55, 107, 251))),

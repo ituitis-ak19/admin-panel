@@ -30,4 +30,10 @@ class DepartmentService {
         .putData<DepartmentDetail, DepartmentDetail>("127.0.0.1:8080", "/department", DepartmentDetail(), json.encode(departmentDetail.toJson()) , null);
     return result.data;
   }
+
+  Future<DepartmentDetail?> create(DepartmentDetail departmentDetail) async {
+    ResponseModel<DepartmentDetail?> result = await networkManager
+        .postData<DepartmentDetail, DepartmentDetail>("127.0.0.1:8080", "/department", DepartmentDetail(), json.encode(departmentDetail.toJson()) , null);
+    return result.data;
+  }
 }

@@ -10,10 +10,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/widgets/input_text.dart';
 import '../model/site.dart';
+import 'main_view.dart';
 
 class EmployeeDetailView extends StatelessWidget {
   final int? id;
-  EmployeeDetailView({super.key, required this.id});
+  final BuildContext buildContext;
+  EmployeeDetailView({super.key, required this.id, required this.buildContext});
 
   static const String _title = 'Flutter Code Sample';
 
@@ -23,18 +25,19 @@ class EmployeeDetailView extends StatelessWidget {
         EmployeeService(networkManager: NetworkManager()),
         id,
         DepartmentService(networkManager: NetworkManager()),
-        SiteService(networkManager: NetworkManager()));
+        SiteService(networkManager: NetworkManager()), context);
     viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel)),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext,)),
     );
   }
 }
 
 class MyStatelessWidget extends StatelessWidget {
   final EmployeeDetailViewModel viewModel;
-  MyStatelessWidget({super.key, required this.viewModel});
+  final BuildContext buildContext;
+  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
 
   @override
   Widget build(BuildContext context) {
@@ -329,7 +332,7 @@ class MyStatelessWidget extends StatelessWidget {
                         ),
                       ],
                       rows: viewModel.employeeDetail!
-                          .siteList! // Loops through dataColumnText, each iteration assigning the value to element
+                          .siteList != null ? viewModel.employeeDetail!.siteList! // Loops through dataColumnText, each iteration assigning the value to element
                           .map(
                             ((element) => DataRow(
                                   cells: <DataCell>[
@@ -347,7 +350,7 @@ class MyStatelessWidget extends StatelessWidget {
                                   ],
                                 )),
                           )
-                          .toList(),
+                          .toList() : [],
                     ): Center(child: CircularProgressIndicator())
                   ),
                 ),
@@ -360,7 +363,15 @@ class MyStatelessWidget extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.04,
                         width: MediaQuery.of(context).size.width * 0.05,
                         child: TextButton(
-                            onPressed: () => viewModel.updateEmployee(),
+                            onPressed: () async {
+                              if (await viewModel.updateEmployee()) {
+                                Navigator.pushReplacement(
+                                    buildContext,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            MainView(index: 5)));
+                              }
+                            },
                             child: Text("Kaydet",
                                 style: TextStyle(color: Colors.white)),
                             style: TextButton.styleFrom(
@@ -374,7 +385,7 @@ class MyStatelessWidget extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.04,
                         width: MediaQuery.of(context).size.width * 0.05,
                         child: TextButton(
-                            onPressed: null,
+                            onPressed: () => Navigator.of(buildContext).pop(),
                             child: Text("İptal",
                                 style: TextStyle(color: Colors.white)),
                             style: TextButton.styleFrom(

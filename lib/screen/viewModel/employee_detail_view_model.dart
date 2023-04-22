@@ -19,6 +19,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   final DepartmentService departmentService;
   final SiteService siteService;
   final int? id;
+  final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
   @observable
@@ -42,7 +43,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   @observable
   int? siteId;
 
-  _EmployeeDetailViewModelBase(this.employeeService, this.id, this.departmentService, this.siteService);
+  _EmployeeDetailViewModelBase(this.employeeService, this.id, this.departmentService, this.siteService, this.buildContext);
 
   @action
   init() async {
@@ -51,18 +52,19 @@ abstract class _EmployeeDetailViewModelBase with Store {
     
     if(id == null){
       employeeDetail = EmployeeDetail();
+      employeeDetail!.siteList = <Site> [];
     }
     else{
       employeeDetail = await employeeService.getEmployeeDetail(id!);
     }
-    isManagerObservable = employeeDetail!.isManager!;
+    isManagerObservable = employeeDetail!.isManager;
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.firstName));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.lastName));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.email));
-    textEditingControllerList.add(TextEditingController(text: employeeDetail!.identityNum.toString()));
+    textEditingControllerList.add(TextEditingController(text: employeeDetail!.identityNum != null ? employeeDetail!.identityNum.toString() : ""));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.birthDate));
     textEditingControllerList.add(TextEditingController(text: employeeDetail!.startDate));
-    textEditingControllerList.add(TextEditingController(text: employeeDetail!.remainingTimeOffDays.toString()));
+    textEditingControllerList.add(TextEditingController(text: employeeDetail!.remainingTimeOffDays != null ? employeeDetail!.remainingTimeOffDays.toString() : ""));
 
     if (employeeDetail != null) {
         dataState = DataState.READY;
@@ -105,13 +107,41 @@ abstract class _EmployeeDetailViewModelBase with Store {
     employeeDetail!.firstName = textEditingControllerList[0].text;
     employeeDetail!.lastName = textEditingControllerList[1].text;
     employeeDetail!.email = textEditingControllerList[2].text;
-    employeeDetail!.identityNum = int.parse(textEditingControllerList[3].text);
+    employeeDetail!.identityNum = textEditingControllerList[3].text != "" ? int.parse(textEditingControllerList[3].text) : null;
     employeeDetail!.birthDate = textEditingControllerList[4].text;
     employeeDetail!.startDate = textEditingControllerList[5].text;
-    employeeDetail!.remainingTimeOffDays = int.parse(textEditingControllerList[6].text);
+    employeeDetail!.remainingTimeOffDays = textEditingControllerList[6].text != "" ? int.parse(textEditingControllerList[6].text) : null;
     employeeDetail!.isManager = isManagerObservable;
-
-    employeeService.updateEmployee(employeeDetail!);
+    EmployeeDetail? updatedEmployee;
+    dataState = DataState.LOADING;
+    if(employeeDetail!.id != null){
+      updatedEmployee = await employeeService.updateEmployee(employeeDetail!);
+      if(updatedEmployee != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Çalışan başarıyla güncellendi")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Çalışan güncellenirken bir hata meydana geldi")));
+        
+    }
+    }
+    else{
+      updatedEmployee = await employeeService.create(employeeDetail!);
+      if(updatedEmployee != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Çalışan başarıyla oluşturuldu")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Çalışan oluştururken bir hata meydana geldi")));
+    }
+    }
+  dataState = DataState.READY;
+  return false;
+    
   }
   
 }

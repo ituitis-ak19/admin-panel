@@ -17,6 +17,7 @@ abstract class _AccessLocationDetailViewModelBase with Store {
   final AccessLocationService accessLocationService;
   final SiteService siteService;
   final int? id;
+  final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
 
   @observable
@@ -32,7 +33,7 @@ abstract class _AccessLocationDetailViewModelBase with Store {
   _AccessLocationDetailViewModelBase(
     this.accessLocationService,
     this.siteService,
-    this.id
+    this.id, this.buildContext
   );
 
   @action
@@ -46,7 +47,7 @@ abstract class _AccessLocationDetailViewModelBase with Store {
       accessLocationDetail = await accessLocationService.getAccessLocationDetail(id!);
     }
     textEditingControllerList.add(TextEditingController(text: accessLocationDetail!.name));
-    textEditingControllerList.add(TextEditingController(text: accessLocationDetail!.type.toString()));
+    textEditingControllerList.add(TextEditingController(text: accessLocationDetail!.type != null ? accessLocationDetail!.type.toString() : ""));
     textEditingControllerList.add(TextEditingController(text: accessLocationDetail!.location));
     if (accessLocationDetail != null) {
         dataState = DataState.READY;
@@ -60,6 +61,34 @@ abstract class _AccessLocationDetailViewModelBase with Store {
     accessLocationDetail!.name = textEditingControllerList[0].text;
     accessLocationDetail!.type = int.parse(textEditingControllerList[1].text);
     accessLocationDetail!.location = (textEditingControllerList[2].text);
-    accessLocationService.updateAccessLocation(accessLocationDetail!);
+    AccessLocationDetail? updatedAccessLocationDetail;
+    dataState = DataState.LOADING;
+    if(accessLocationDetail!.id != null){
+      updatedAccessLocationDetail = await accessLocationService.updateAccessLocation(accessLocationDetail!);
+      if(updatedAccessLocationDetail != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Giriş Noktası başarıyla güncellendi")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Giriş Noktası güncellenirken bir hata meydana geldi")));
+        
+    }
+    }
+    else{
+      updatedAccessLocationDetail = await accessLocationService.create(accessLocationDetail!);
+      if(updatedAccessLocationDetail != null){
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Giriş Noktası başarıyla oluşturuldu")));
+      return true;
+    }
+    else{
+      ScaffoldMessenger.of(buildContext)
+          .showSnackBar(SnackBar(content: Text("Giriş Noktası oluştururken bir hata meydana geldi")));
+    }
+    }
+  dataState = DataState.READY;
+  return false;
   }
 }

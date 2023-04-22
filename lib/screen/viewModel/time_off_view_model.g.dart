@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'time_off_type_detail_view_model.dart';
+part of 'time_off_view_model.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'time_off_type_detail_view_model.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$TimeOffTypeDetailViewModel on _TimeOffTypeDetailViewModelBase, Store {
+mixin _$TimeOffViewModel on _TimeOffViewModelBase, Store {
   late final _$dataStateAtom =
-      Atom(name: '_TimeOffTypeDetailViewModelBase.dataState', context: context);
+      Atom(name: '_TimeOffViewModelBase.dataState', context: context);
 
   @override
   DataState get dataState {
@@ -25,44 +25,43 @@ mixin _$TimeOffTypeDetailViewModel on _TimeOffTypeDetailViewModelBase, Store {
     });
   }
 
-  late final _$timeOffTypeAtom = Atom(
-      name: '_TimeOffTypeDetailViewModelBase.timeOffType', context: context);
+  late final _$timeOffListAtom =
+      Atom(name: '_TimeOffViewModelBase.timeOffList', context: context);
 
   @override
-  TimeOffType? get timeOffType {
-    _$timeOffTypeAtom.reportRead();
-    return super.timeOffType;
+  List<TimeOff>? get timeOffList {
+    _$timeOffListAtom.reportRead();
+    return super.timeOffList;
   }
 
   @override
-  set timeOffType(TimeOffType? value) {
-    _$timeOffTypeAtom.reportWrite(value, super.timeOffType, () {
-      super.timeOffType = value;
+  set timeOffList(List<TimeOff>? value) {
+    _$timeOffListAtom.reportWrite(value, super.timeOffList, () {
+      super.timeOffList = value;
     });
   }
 
   late final _$initAsyncAction =
-      AsyncAction('_TimeOffTypeDetailViewModelBase.init', context: context);
+      AsyncAction('_TimeOffViewModelBase.init', context: context);
 
   @override
   Future init() {
     return _$initAsyncAction.run(() => super.init());
   }
 
-  late final _$updateTimeOffTypeAsyncAction = AsyncAction(
-      '_TimeOffTypeDetailViewModelBase.updateTimeOffType',
-      context: context);
+  late final _$signTimeOffAsyncAction =
+      AsyncAction('_TimeOffViewModelBase.signTimeOff', context: context);
 
   @override
-  Future<bool> updateTimeOffType() {
-    return _$updateTimeOffTypeAsyncAction.run(() => super.updateTimeOffType());
+  Future<bool> signTimeOff(int id) {
+    return _$signTimeOffAsyncAction.run(() => super.signTimeOff(id));
   }
 
   @override
   String toString() {
     return '''
 dataState: ${dataState},
-timeOffType: ${timeOffType}
+timeOffList: ${timeOffList}
     ''';
   }
 }

@@ -29,4 +29,10 @@ class TimeOffTypeService {
         .putData<TimeOffType, TimeOffType>("127.0.0.1:8080", "/timeOffType", TimeOffType(), json.encode(timeOffType.toJson()) , null);
     return result.data;
   }
+
+  Future<TimeOffType?> create(TimeOffType timeOffType) async {
+    ResponseModel<TimeOffType?> result = await networkManager
+        .postData<TimeOffType, TimeOffType>("127.0.0.1:8080", "/timeOffType", TimeOffType(), json.encode(timeOffType.toJson()) , null);
+    return result.data;
+  }
 }

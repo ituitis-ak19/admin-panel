@@ -30,4 +30,10 @@ class AssetService {
         .putData<AssetDetail, AssetDetail>("127.0.0.1:8080", "/product", AssetDetail(), json.encode(assetDetail.toJson()) , null);
     return result.data;
   }
+
+  Future<AssetDetail?> create(AssetDetail assetDetail) async {
+    ResponseModel<AssetDetail?> result = await networkManager
+        .postData<AssetDetail, AssetDetail>("127.0.0.1:8080", "/product", AssetDetail(), json.encode(assetDetail.toJson()) , null);
+    return result.data;
+  }
 }
