@@ -90,22 +90,6 @@ mixin _$DepartmentDetailViewModel on _DepartmentDetailViewModelBase, Store {
     });
   }
 
-  late final _$managerAtom =
-      Atom(name: '_DepartmentDetailViewModelBase.manager', context: context);
-
-  @override
-  EmployeeDetail? get manager {
-    _$managerAtom.reportRead();
-    return super.manager;
-  }
-
-  @override
-  set manager(EmployeeDetail? value) {
-    _$managerAtom.reportWrite(value, super.manager, () {
-      super.manager = value;
-    });
-  }
-
   late final _$employeeListDataStateAtom = Atom(
       name: '_DepartmentDetailViewModelBase.employeeListDataState',
       context: context);
@@ -191,7 +175,6 @@ departmentDetail: ${departmentDetail},
 employeeList: ${employeeList},
 managersToSign: ${managersToSign},
 employeeId: ${employeeId},
-manager: ${manager},
 employeeListDataState: ${employeeListDataState}
     ''';
   }

@@ -20,7 +20,7 @@ abstract class _SiteViewModelBase with Store {
   @action
   init() async {
     siteList = await siteService.getSites();
-    if (siteList != null && siteList!.isNotEmpty) {
+    if (siteList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;

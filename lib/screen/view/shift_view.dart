@@ -1,24 +1,23 @@
+import 'package:admin_ui/screen/view/shift_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
 import '../../core/util/size_config.dart';
-import '../service/time_off_service.dart';
-import '../viewModel/time_off_view_model.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../service/shift_service.dart';
+import '../viewModel/shift_view_model.dart';
 
-
-class TimeOffView extends StatelessWidget {
-  const TimeOffView({super.key});
+class ShiftView extends StatelessWidget {
+  const ShiftView({super.key});
 
   static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init();
-    TimeOffViewModel viewModel = TimeOffViewModel(
-        TimeOffService(networkManager: NetworkManager()), context);
+    ShiftViewModel viewModel = ShiftViewModel(
+        ShiftService(networkManager: NetworkManager()));
     viewModel.init();
     return MaterialApp(
       title: _title,
@@ -31,12 +30,40 @@ class TimeOffView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: SizeConfig.width * 0.81,
+                    width: SizeConfig.width * 0.75,
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                       ),
                     ),
+                  ),
+                  Container(
+                    height: SizeConfig.height * 0.05,
+                    width: SizeConfig.width * 0.07,
+                    child: TextButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Container(
+                                      width: SizeConfig.width *
+                                          0.3,
+                                      height:
+                                          SizeConfig.height *
+                                              0.3,
+                                      child: ShiftDetailView(
+                                          id: null,
+                                          buildContext: context,)),
+                                  
+                                );
+                              });
+                        },
+                        child: Text("Yeni Oluştur",
+                            style: TextStyle(color: Colors.white)),
+                        style: TextButton.styleFrom(
+                            backgroundColor:
+                                Color.fromARGB(255, 55, 107, 251))),
                   ),
                 ],
               ),
@@ -54,7 +81,7 @@ class TimeOffView extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  final TimeOffViewModel viewModel;
+  final ShiftViewModel viewModel;
   MyStatelessWidget({super.key, required this.viewModel});
 
   @override
@@ -65,11 +92,11 @@ class MyStatelessWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         case DataState.ERROR:
           return Center(
-              child: Text("İmza sürecindeki izinler görüntülenirken bir hata oluştu"));
+              child: Text("Vardiya görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return Container(
             width: SizeConfig.width * 0.5,
-            height: SizeConfig.height * 0.7,
+            height: SizeConfig.height * 0.75,
             child: SingleChildScrollView(
               child: DataTable(
               columns: const <DataColumn>[
@@ -92,7 +119,7 @@ class MyStatelessWidget extends StatelessWidget {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Soyad',
+                      'Başlama Saati',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -100,23 +127,7 @@ class MyStatelessWidget extends StatelessWidget {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Başlangıç Tarihi',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Bitiş Tarihi',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'İzin Tipi',
+                      'Bitiş Saati',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -131,31 +142,38 @@ class MyStatelessWidget extends StatelessWidget {
                 ),
               ],
               rows: viewModel
-                  .timeOffList! 
+                  .shiftList! // Loops through dataColumnText, each iteration assigning the value to element
                   .map(
                     ((element) => DataRow(cells: <DataCell>[
                           DataCell(Text(element.id!.toString())),
-                          DataCell(Text(element.firstName!)),
-                           DataCell(Text(element.lastName!)), 
-                            DataCell(Text(element.startDate!)), 
-                             DataCell(Text(element.endDate!)),  
-                          DataCell(Text(element.timeOffType!)),
+                          DataCell(Text(element.name!)), //Extracting from Map element the value
+                          DataCell(Text(element.startTime!)),
+                          DataCell(Text(element.endTime!)),
                           DataCell(Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                    onPressed: () async {
-                                      if(await viewModel.signTimeOff(element.id!)){
-                                        viewModel.init();
-                                      }
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              content: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.3,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.3,
+                                                  child: ShiftDetailView(
+                                                      id: element.id!,
+                                                      buildContext: context,)),
+                                            );
+                                          });
                                     },
-                                    icon: Icon(Icons.check)),
-                                    IconButton(
-                                    onPressed: () async {
-                                      Uri url = Uri(scheme: "http", host: "127.0.0.1", path: "/timeOff/document/" + element.id!.toString(), port: 8080);
-                                      await launchUrl(url);
-                                    },
-                                    icon: Icon(Icons.print))
+                                    icon: Icon(Icons.navigate_next))
                               ]))
                         ])),
                   )

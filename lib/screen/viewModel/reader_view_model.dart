@@ -20,7 +20,7 @@ abstract class _ReaderViewModelBase with Store {
   @action
   init() async {
     readerList = await readerService.getReaders();
-    if (readerList != null && readerList!.isNotEmpty) {
+    if (readerList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;

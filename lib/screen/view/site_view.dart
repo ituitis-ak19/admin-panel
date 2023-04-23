@@ -1,3 +1,4 @@
+import 'package:admin_ui/core/util/size_config.dart';
 import 'package:admin_ui/screen/view/site_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -12,10 +13,11 @@ void main() => runApp(const SiteView());
 class SiteView extends StatelessWidget {
   const SiteView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Alanlar';
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init();
     SiteViewModel viewModel =
         SiteViewModel(SiteService(networkManager: NetworkManager()));
     viewModel.init();
@@ -30,7 +32,7 @@ class SiteView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.79,
+                    width: SizeConfig.width * 0.75,
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
@@ -38,8 +40,8 @@ class SiteView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    width: MediaQuery.of(context).size.width * 0.05,
+                    height: SizeConfig.height * 0.05,
+                    width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
                                   showDialog(
@@ -68,7 +70,7 @@ class SiteView extends StatelessWidget {
                 ],
               ),
               Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: SizeConfig.width,
                   child: MyStatelessWidget(viewModel: viewModel)),
             ],
           ),
@@ -93,8 +95,8 @@ class MyStatelessWidget extends StatelessWidget {
               child: Text("Alanlar görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.85,
+            width: SizeConfig.width * 0.5,
+            height: SizeConfig.height * 0.75,
             child: SingleChildScrollView(
               child: DataTable(
             columns: const <DataColumn>[

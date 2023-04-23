@@ -15,7 +15,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    SizeConfig().init();
 
     return Padding(
       padding: const EdgeInsets.all(4.0),

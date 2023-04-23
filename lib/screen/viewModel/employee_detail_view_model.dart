@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
+import '../model/shift.dart';
+import '../service/shift_service.dart';
 part 'employee_detail_view_model.g.dart';
 
 class EmployeeDetailViewModel= _EmployeeDetailViewModelBase with _$EmployeeDetailViewModel;
@@ -18,6 +20,7 @@ abstract class _EmployeeDetailViewModelBase with Store {
   final EmployeeService employeeService;
   final DepartmentService departmentService;
   final SiteService siteService;
+  final ShiftService shiftService;
   final int? id;
   final BuildContext buildContext;
   List<TextEditingController> textEditingControllerList = [];
@@ -33,6 +36,9 @@ abstract class _EmployeeDetailViewModelBase with Store {
 
   @observable
   List<Site>? siteList;
+
+  @observable
+  List<Shift>? shiftList;
   
   @observable
   DataState siteListDataState = DataState.READY;
@@ -43,12 +49,13 @@ abstract class _EmployeeDetailViewModelBase with Store {
   @observable
   int? siteId;
 
-  _EmployeeDetailViewModelBase(this.employeeService, this.id, this.departmentService, this.siteService, this.buildContext);
+  _EmployeeDetailViewModelBase(this.employeeService, this.id, this.departmentService, this.siteService, this.buildContext, this.shiftService);
 
   @action
   init() async {
     departmentList = await departmentService.getDepartments();
     siteList = await siteService.getSites();
+    shiftList = await shiftService.getShifts();
     
     if(id == null){
       employeeDetail = EmployeeDetail();

@@ -21,6 +21,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
   String? gender;
   List<Site>? siteList;
   int? identityNum;
+  int? shiftId;
 
   EmployeeDetail({
     this.id,
@@ -34,7 +35,8 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
     this.remainingTimeOffDays,
     this.gender,
     this.siteList,
-    this.identityNum
+    this.identityNum,
+    this.shiftId
   });
  
   @override
@@ -51,7 +53,8 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       'remainingTimeOffDays': remainingTimeOffDays,
       'gender': gender,
       'siteIdList': siteList!.map((x) => x.id).toList(),
-      'identityNum' : identityNum
+      'identityNum' : identityNum,
+      'shiftId' : shiftId
     };
   }
 
@@ -74,6 +77,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
               .toList())
           : null,
       identityNum: map['identityNum'] != null ? map['identityNum'] as int : null,
+      shiftId: map['shiftId'] != null ? map['shiftId'] as int : null,
     );
   }
 
@@ -93,7 +97,8 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       other.remainingTimeOffDays == remainingTimeOffDays &&
       other.gender == gender &&
       listEquals(other.siteList, siteList) &&
-      other.identityNum == identityNum;
+      other.identityNum == identityNum &&
+      other.shiftId == shiftId;
   }
 
   @override
@@ -109,6 +114,7 @@ class EmployeeDetail extends BaseModel<EmployeeDetail> {
       remainingTimeOffDays.hashCode ^
       gender.hashCode ^
       siteList.hashCode ^
-      identityNum.hashCode;
+      identityNum.hashCode ^
+      shiftId.hashCode;
   }
 }

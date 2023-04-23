@@ -1,23 +1,24 @@
 import 'package:admin_ui/core/network/network_manager.dart';
 import 'package:admin_ui/core/widgets/input_text2.dart';
-import 'package:admin_ui/screen/service/site_service.dart';
-import 'package:admin_ui/screen/viewModel/site_detail_view_model.dart';
+import 'package:admin_ui/screen/service/shift_service.dart';
+import 'package:admin_ui/screen/viewModel/shift_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
+import '../../core/widgets/input_text.dart';
 import 'main_view.dart';
 
-class SiteDetailView extends StatelessWidget {
+class ShiftDetailView extends StatelessWidget {
   final int? id;
   final BuildContext buildContext;
-  const SiteDetailView({super.key, this.id, required this.buildContext});
+  const ShiftDetailView({super.key, this.id, required this.buildContext});
 
-  static const String _title = 'Alan Detay Pop-up';
+  static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
-    SiteDetailViewModel viewModel = SiteDetailViewModel(SiteService(networkManager: NetworkManager()), id, context);
+    ShiftDetailViewModel viewModel = ShiftDetailViewModel(ShiftService(networkManager: NetworkManager()), id, context);
     viewModel.init();
     return MaterialApp(
       title: _title,
@@ -27,7 +28,7 @@ class SiteDetailView extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  final SiteDetailViewModel viewModel;
+  final ShiftDetailViewModel viewModel;
   final BuildContext buildContext;
   const MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
 
@@ -41,7 +42,7 @@ class MyStatelessWidget extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           case DataState.ERROR:
             return Center(
-                child: Text("Alan Detayı görüntülenirken bir hata oluştu"));
+                child: Text("Vardiya Detayı görüntülenirken bir hata oluştu"));
           case DataState.READY:
           return Column(
             children: [
@@ -50,15 +51,33 @@ class MyStatelessWidget extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.75,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Alan",
+                  child: Text("Vardiya",
                       style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
                 ),
               ),
                ProfileCard(
-                          icon: Icon(Icons.aspect_ratio,),
-                          tittle: "Alan  Adı",
+                          icon: Icon(Icons.person),
+                          tittle: "Vardiya  Adı",
                           textEditingController:
                               viewModel.textEditingControllerList[0]),
+              Row(
+                  children: [
+                    Expanded(
+                        flex: 5,
+                        child: ProfileCard(
+                            icon: Icon(Icons.person),
+                            tittle: "Başlangıç Saati",
+                            textEditingController:
+                                viewModel.textEditingControllerList[1])),
+                    Expanded(
+                        flex: 5,
+                        child: ProfileCard(
+                            icon: Icon(Icons.person),
+                            tittle: "Bitiş Saati",
+                            textEditingController:
+                                viewModel.textEditingControllerList[2])),
+                  ],
+                ),
               Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -69,12 +88,12 @@ class MyStatelessWidget extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.05,
                           child: TextButton(
                               onPressed: () async {
-                              if (await viewModel.updateSite()) {
+                              if (await viewModel.updateShift()) {
                                 Navigator.pushReplacement(
                                     buildContext,
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            MainView(index: 0)));
+                                            MainView(index: 4)));
                               }
                             },
                               child: Text("Kaydet", style: TextStyle(color: Colors.white)),

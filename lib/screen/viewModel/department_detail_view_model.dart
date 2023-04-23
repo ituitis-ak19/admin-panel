@@ -34,9 +34,6 @@ abstract class _DepartmentDetailViewModelBase with Store {
   int? employeeId;
 
   @observable
-  EmployeeDetail? manager;
-
-  @observable
   DataState employeeListDataState = DataState.READY;
 
   _DepartmentDetailViewModelBase(this.departmentService, this.id, this.employeeService, this.buildContext);
@@ -49,11 +46,10 @@ abstract class _DepartmentDetailViewModelBase with Store {
     }
     else{
       departmentDetail = await departmentService.getDepartmentDetail(id!);
-      manager = await employeeService.getEmployeeDetail(departmentDetail!.managerId!);
       await initManagerToSign();
     }
     textEditingControllerList.add(TextEditingController(text: departmentDetail!.name));
-    employeeList = await employeeService.getEmployees();
+    employeeList = await employeeService.getManagers();
     if (departmentDetail != null) {
         dataState = DataState.READY;
       } else {

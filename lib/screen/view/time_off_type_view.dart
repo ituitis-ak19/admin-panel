@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
+import '../../core/util/size_config.dart';
 
 class TimeOffTypeView extends StatelessWidget {
   const TimeOffTypeView({super.key});
@@ -14,6 +15,7 @@ class TimeOffTypeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init();
     TimeOffTypeViewModel viewModel = TimeOffTypeViewModel(
         TimeOffTypeService(networkManager: NetworkManager()));
     viewModel.init();
@@ -28,7 +30,7 @@ class TimeOffTypeView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.79,
+                    width: SizeConfig.width * 0.75,
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
@@ -36,8 +38,8 @@ class TimeOffTypeView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    width: MediaQuery.of(context).size.width * 0.05,
+                    height: SizeConfig.height * 0.05,
+                    width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
                           showDialog(
@@ -45,10 +47,10 @@ class TimeOffTypeView extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   content: Container(
-                                      width: MediaQuery.of(context).size.width *
+                                      width: SizeConfig.width *
                                           0.3,
                                       height:
-                                          MediaQuery.of(context).size.height *
+                                          SizeConfig.height *
                                               0.3,
                                       child: TimeOffTypeDetailView(
                                           id: null,
@@ -66,7 +68,7 @@ class TimeOffTypeView extends StatelessWidget {
                 ],
               ),
               Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: SizeConfig.width,
                   child: MyStatelessWidget(
                     viewModel: viewModel,
                   )),
@@ -93,8 +95,8 @@ class MyStatelessWidget extends StatelessWidget {
               child: Text("İzin tipleri görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.85,
+            width: SizeConfig.width * 0.5,
+            height: SizeConfig.height * 0.75,
             child: SingleChildScrollView(
               child: DataTable(
               columns: const <DataColumn>[

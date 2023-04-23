@@ -19,6 +19,12 @@ class EmployeeService {
     return result.data;
   }
 
+  Future<List<Employee>?> getManagers() async {
+    ResponseModel<List<Employee>> result = await networkManager
+        .getData<List<Employee>, Employee>("127.0.0.1:8080", "/employee/managers", Employee(), null);
+    return result.data;
+  }
+
 
   Future<EmployeeDetail?> getEmployeeDetail(int id) async {
     ResponseModel<EmployeeDetail?> result = await networkManager

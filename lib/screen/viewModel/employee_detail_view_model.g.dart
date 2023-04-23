@@ -73,6 +73,22 @@ mixin _$EmployeeDetailViewModel on _EmployeeDetailViewModelBase, Store {
     });
   }
 
+  late final _$shiftListAtom =
+      Atom(name: '_EmployeeDetailViewModelBase.shiftList', context: context);
+
+  @override
+  List<Shift>? get shiftList {
+    _$shiftListAtom.reportRead();
+    return super.shiftList;
+  }
+
+  @override
+  set shiftList(List<Shift>? value) {
+    _$shiftListAtom.reportWrite(value, super.shiftList, () {
+      super.shiftList = value;
+    });
+  }
+
   late final _$siteListDataStateAtom = Atom(
       name: '_EmployeeDetailViewModelBase.siteListDataState', context: context);
 
@@ -187,6 +203,7 @@ dataState: ${dataState},
 employeeDetail: ${employeeDetail},
 departmentList: ${departmentList},
 siteList: ${siteList},
+shiftList: ${shiftList},
 siteListDataState: ${siteListDataState},
 isManagerObservable: ${isManagerObservable},
 siteId: ${siteId}

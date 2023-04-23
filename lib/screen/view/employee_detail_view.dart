@@ -3,12 +3,14 @@ import 'package:admin_ui/core/widgets/input_text2.dart';
 import 'package:admin_ui/screen/model/department.dart';
 import 'package:admin_ui/screen/service/department_service.dart';
 import 'package:admin_ui/screen/service/employee_service.dart';
+import 'package:admin_ui/screen/service/shift_service.dart';
 import 'package:admin_ui/screen/service/site_service.dart';
 import 'package:admin_ui/screen/viewModel/employee_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/widgets/input_text.dart';
+import '../model/shift.dart';
 import '../model/site.dart';
 import 'main_view.dart';
 
@@ -17,7 +19,7 @@ class EmployeeDetailView extends StatelessWidget {
   final BuildContext buildContext;
   EmployeeDetailView({super.key, required this.id, required this.buildContext});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Çalışan Detay Pop-up';
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,10 @@ class EmployeeDetailView extends StatelessWidget {
         EmployeeService(networkManager: NetworkManager()),
         id,
         DepartmentService(networkManager: NetworkManager()),
-        SiteService(networkManager: NetworkManager()), context);
+        SiteService(networkManager: NetworkManager()),
+        context,
+        ShiftService(networkManager: NetworkManager()),
+        );
     viewModel.init();
     return MaterialApp(
       title: _title,
@@ -116,35 +121,75 @@ class MyStatelessWidget extends StatelessWidget {
                                 viewModel.textEditingControllerList[5])),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Departman")),
-                      DropdownButtonFormField(
-                          value: viewModel.employeeDetail!.departmentId,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 1, color: Colors.grey)),
-                              iconColor: Theme.of(context).colorScheme.primary,
-                              prefixIcon: Icon(Icons.work)),
-                          isExpanded: true,
-                          items:
-                              viewModel.departmentList!.map((Department items) {
-                            return DropdownMenuItem(
-                              value: items.id,
-                              child: Text(items.name!),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            viewModel.employeeDetail!.departmentId = value;
-                          }),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Departman")),
+                            DropdownButtonFormField(
+                                value: viewModel.employeeDetail!.departmentId,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(width: 1, color: Colors.grey)),
+                                    iconColor: Theme.of(context).colorScheme.primary,
+                                    prefixIcon: Icon(Icons.work)),
+                                isExpanded: true,
+                                items:
+                                    viewModel.departmentList!.map((Department items) {
+                                  return DropdownMenuItem(
+                                    value: items.id,
+                                    child: Text(items.name!),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  viewModel.employeeDetail!.departmentId = value;
+                                }),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Vardiya")),
+                            DropdownButtonFormField(
+                                value: viewModel.employeeDetail!.shiftId,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(width: 1, color: Colors.grey)),
+                                    iconColor: Theme.of(context).colorScheme.primary,
+                                    prefixIcon: Icon(Icons.access_time)),
+                                isExpanded: true,
+                                items:
+                                    viewModel.shiftList!.map((Shift items) {
+                                  return DropdownMenuItem(
+                                    value: items.id,
+                                    child: Text(items.name!),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  viewModel.employeeDetail!.shiftId = value;
+                                }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(4.0),

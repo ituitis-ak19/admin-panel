@@ -132,7 +132,7 @@ class MyStatelessWidget extends StatelessWidget {
                                     buildContext,
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            MainView(index: 3)));
+                                            MainView(index: 2)));
                               }
                             },
                               child: Text("Kaydet", style: TextStyle(color: Colors.white)),

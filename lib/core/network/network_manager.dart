@@ -69,7 +69,7 @@ class NetworkManager {
     switch (res.statusCode) {
       case 200:
         if (jsonDecode(res.body) != null) {
-          var jsonBody = jsonDecode(res.body);
+          var jsonBody = jsonDecode(utf8.decode(res.body.codeUnits));
 
           if (jsonBody is List) {
             result.data = jsonBody

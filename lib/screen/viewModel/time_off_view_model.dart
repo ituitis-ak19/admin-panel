@@ -24,7 +24,7 @@ abstract class _TimeOffViewModelBase with Store {
   @action
   init() async {
     timeOffList = await timeOffService.getTimeOffs();
-    if (timeOffList != null && timeOffList!.isNotEmpty) {
+    if (timeOffList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;

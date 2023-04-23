@@ -1,8 +1,8 @@
 import 'package:admin_ui/screen/view/access_location_view.dart';
 import 'package:admin_ui/screen/view/asset_view.dart';
-import 'package:admin_ui/screen/view/dashboard_view.dart';
 import 'package:admin_ui/screen/view/department_view.dart';
 import 'package:admin_ui/screen/view/reader_view.dart';
+import 'package:admin_ui/screen/view/shift_view.dart';
 import 'package:admin_ui/screen/view/site_view.dart';
 import 'package:admin_ui/screen/view/time_off_type_view.dart';
 import 'package:admin_ui/screen/view/time_off_view.dart';
@@ -10,7 +10,7 @@ import 'package:admin_ui/screen/viewModel/main_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:side_navigation/side_navigation.dart';
-import 'employee_detail_view.dart';
+import '../../core/util/size_config.dart';
 import 'employee_view.dart';
 
 class MainView extends StatelessWidget {
@@ -21,11 +21,9 @@ class MainView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init();
     final MainViewModel viewModel = MainViewModel(selectedIndex: index == null ? 0 : index!);
     List<Widget> views = const [
-    Center(
-      child: DashBoardView(),
-    ),
     Center(
       child: SiteView(),
     ),
@@ -37,6 +35,9 @@ class MainView extends StatelessWidget {
     ),
     Center(
       child: DepartmentView(),
+    ),
+    Center(
+      child: ShiftView(),
     ),
     Center(
       child: EmployeeView()
@@ -60,15 +61,11 @@ class MainView extends StatelessWidget {
             SideNavigationBar(
               expandable: false,
               header: SideNavigationBarHeader(
-                  image: Image.asset('assets/logo-white.png', width: 150,),
+                  image: Image.asset('assets/logo-white.png', width: SizeConfig.width * 0.1),
                   title: Text(''),
                   subtitle: Text('')),
               selectedIndex: viewModel.selectedIndex,
               items: const [
-                SideNavigationBarItem(
-                  icon: Icons.home,
-                  label: 'Ana Sayfa',
-                ),
                 SideNavigationBarItem(
                   icon: Icons.aspect_ratio,
                   label: 'Alanlar',
@@ -84,6 +81,10 @@ class MainView extends StatelessWidget {
                 SideNavigationBarItem(
                   icon: Icons.work,
                   label: 'Departmanlar',
+                ),
+                SideNavigationBarItem(
+                  icon: Icons.access_alarm,
+                  label: 'Vardiya',
                 ),
                 SideNavigationBarItem(
                   icon: Icons.people,

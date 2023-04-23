@@ -20,7 +20,7 @@ abstract class _TimeOffTypeViewModelBase with Store {
   @action
   init() async {
     timeOffTypeList = await siteService.getTimeOffTypes();
-    if (timeOffTypeList != null && timeOffTypeList!.isNotEmpty) {
+    if (timeOffTypeList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;

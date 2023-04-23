@@ -6,6 +6,7 @@ import 'package:admin_ui/core/constant/enum/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../core/util/size_config.dart';
 import '../viewModel/asset_view_model.dart';
 
 void main() => runApp(const AssetView());
@@ -17,6 +18,7 @@ class AssetView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init();
     AssetViewModel viewModel = AssetViewModel(
         AssetService(networkManager: NetworkManager()));
     viewModel.init();
@@ -31,7 +33,7 @@ class AssetView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.79,
+                    width: SizeConfig.width * 0.75,
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
@@ -39,8 +41,8 @@ class AssetView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    width: MediaQuery.of(context).size.width * 0.05,
+                    height: SizeConfig.height * 0.05,
+                    width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
                                     showDialog(
@@ -69,7 +71,7 @@ class AssetView extends StatelessWidget {
                 ],
               ),
               Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: SizeConfig.width,
                   child: MyStatelessWidget(viewModel: viewModel)),
             ],
           ),
@@ -94,8 +96,8 @@ class MyStatelessWidget extends StatelessWidget {
               child: Text("Zimmetli ürünler görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.85,
+            width: SizeConfig.width * 0.5,
+            height: SizeConfig.height * 0.75,
             child: SingleChildScrollView(
               child: DataTable(
             columns: const <DataColumn>[

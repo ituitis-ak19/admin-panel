@@ -20,7 +20,7 @@ abstract class _DepartmentViewModelBase with Store {
   @action
   init() async {
     departmentList = await departmentService.getDepartments();
-    if (departmentList != null && departmentList!.isNotEmpty) {
+    if (departmentList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;

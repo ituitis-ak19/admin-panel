@@ -20,7 +20,7 @@ abstract class _AccessLocationViewModelBase with Store {
   @action
   init() async {
     accessLocationList = await accessLocationService.getAccessLocations();
-    if (accessLocationList != null && accessLocationList!.isNotEmpty) {
+    if (accessLocationList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;

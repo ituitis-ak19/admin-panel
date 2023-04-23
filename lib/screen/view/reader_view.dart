@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/constant/enum/enums.dart';
+import '../../core/util/size_config.dart';
 import '../service/reader_service.dart';
 import '../viewModel/reader_view_model.dart';
 
@@ -16,6 +17,7 @@ class ReaderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init();
     ReaderViewModel viewModel =
         ReaderViewModel(ReaderService(networkManager: NetworkManager()));
     viewModel.init();
@@ -30,7 +32,7 @@ class ReaderView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.79,
+                    width: SizeConfig.width * 0.75,
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
@@ -38,8 +40,8 @@ class ReaderView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    width: MediaQuery.of(context).size.width * 0.05,
+                    height: SizeConfig.height * 0.05,
+                    width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
                                   showDialog(
@@ -68,7 +70,7 @@ class ReaderView extends StatelessWidget {
                 ],
               ),
               Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: SizeConfig.width,
                   child: MyStatelessWidget(viewModel: viewModel)),
             ],
           ),
@@ -93,8 +95,8 @@ class MyStatelessWidget extends StatelessWidget {
               child: Text("Okuyucular görüntülenirken bir hata oluştu"));
         case DataState.READY:
           return Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.85,
+            width: SizeConfig.width * 0.5,
+            height: SizeConfig.height * 0.75,
             child: SingleChildScrollView(
               child: DataTable(
             columns: const <DataColumn>[

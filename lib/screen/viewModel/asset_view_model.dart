@@ -20,7 +20,7 @@ abstract class _AssetViewModelBase with Store {
   @action
   init() async {
     assetList = await assetService.getAssets();
-    if (assetList != null && assetList!.isNotEmpty) {
+    if (assetList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
