@@ -4,6 +4,7 @@ import 'package:admin_ui/screen/service/asset_service.dart';
 import 'package:admin_ui/screen/service/employee_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/constant/enum/enums.dart';
 import '../../core/network/network_manager.dart';
@@ -21,11 +22,29 @@ class AssetDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    void _showCalendar(
+      BuildContext context, TextEditingController textEditingController) async {
+    DateTime? pickedDate = await showDatePicker(
+        context: context,
+        locale: const Locale('tr'),
+        initialDate: DateTime.now(),
+        firstDate: DateTime(
+            2000), //DateTime.now() - not to allow to choose before today.
+        lastDate: DateTime(2101),
+        confirmText: "TAMAM");
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+      textEditingController.text = formattedDate;
+    }
+  }
+  
     AssetDetailViewModel viewModel = AssetDetailViewModel(AssetService(networkManager: NetworkManager()), id, EmployeeService(networkManager: NetworkManager()), context);
     viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext)),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext, showCalendar: _showCalendar,)),
     );
   }
 }
@@ -33,7 +52,8 @@ class AssetDetailView extends StatelessWidget {
 class MyStatelessWidget extends StatelessWidget {
   final AssetDetailViewModel viewModel;
   final BuildContext buildContext;
-  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
+  final void Function(BuildContext context, TextEditingController textEditingController)? showCalendar;
+  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext, this.showCalendar});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +83,7 @@ class MyStatelessWidget extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.computer),
                           tittle: "Ürün Adı",
                           textEditingController:
                                 viewModel.textEditingControllerList[0])),
@@ -83,7 +103,7 @@ class MyStatelessWidget extends StatelessWidget {
                                       borderSide:
                                           BorderSide(width: 1, color: Colors.grey)),
                                   iconColor: Theme.of(context).colorScheme.primary,
-                                  prefixIcon: Icon(Icons.work)),
+                                  prefixIcon: Icon(Icons.person)),
                               isExpanded: true,
                               items:
                                   viewModel.employeeList!.map((Employee items) {
@@ -103,14 +123,15 @@ class MyStatelessWidget extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                        onTap: ()=> showCalendar!(buildContext,viewModel.textEditingControllerList[1]),
+                          icon: Icon(Icons.calendar_month),
                           tittle: "Veriliş Tarihi",
                           textEditingController:
                                 viewModel.textEditingControllerList[1])),
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.description),
                           tittle: "Açıklama",
                           textEditingController:
                                 viewModel.textEditingControllerList[2]))              
