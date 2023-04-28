@@ -14,7 +14,7 @@ void main() => runApp(const AssetView());
 class AssetView extends StatelessWidget {
   const AssetView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Zimmetli Ürünler';
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,10 @@ class AssetView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Zimmetli Ürün İsmine Göre Ara"
                       ),
                     ),
                   ),

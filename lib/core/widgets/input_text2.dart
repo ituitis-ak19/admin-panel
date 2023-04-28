@@ -5,12 +5,15 @@ class ProfileCard extends StatelessWidget {
   final String? tittle;
   final Icon? icon;
   final TextEditingController textEditingController;
+  void Function()? onTap;
 
-  const ProfileCard(
+
+  ProfileCard(
       {super.key,
       this.tittle,
       this.icon,
-      required this.textEditingController
+      required this.textEditingController,
+      this.onTap
       });
 
   @override
@@ -29,6 +32,7 @@ class ProfileCard extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text("$tittle")),
                 TextFormField(
+                  onTap: onTap,
                   controller: textEditingController,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.grey)),

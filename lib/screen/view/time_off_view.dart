@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 class TimeOffView extends StatelessWidget {
   const TimeOffView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'İzinler';
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,10 @@ class TimeOffView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.81,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Çalışan İsmine Göre Ara"
                       ),
                     ),
                   ),

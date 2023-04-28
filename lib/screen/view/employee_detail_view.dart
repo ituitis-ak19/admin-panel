@@ -8,6 +8,7 @@ import 'package:admin_ui/screen/service/site_service.dart';
 import 'package:admin_ui/screen/viewModel/employee_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import '../../core/constant/enum/enums.dart';
 import '../../core/widgets/input_text.dart';
 import '../model/shift.dart';
@@ -18,6 +19,23 @@ class EmployeeDetailView extends StatelessWidget {
   final int? id;
   final BuildContext buildContext;
   EmployeeDetailView({super.key, required this.id, required this.buildContext});
+
+  void _showCalendar(
+      BuildContext context, TextEditingController textEditingController) async {
+    DateTime? pickedDate = await showDatePicker(
+        context: context,
+        locale: const Locale('tr'),
+        initialDate: DateTime.now(),
+        firstDate: DateTime(
+            2000), //DateTime.now() - not to allow to choose before today.
+        lastDate: DateTime(2101),
+        confirmText: "TAMAM");
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+      textEditingController.text = formattedDate;
+    }
+  }
 
   static const String _title = 'Çalışan Detay Pop-up';
 
@@ -34,7 +52,7 @@ class EmployeeDetailView extends StatelessWidget {
     viewModel.init();
     return MaterialApp(
       title: _title,
-      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext,)),
+      home: Scaffold(body: MyStatelessWidget(viewModel: viewModel, buildContext: buildContext, showCalendar: _showCalendar,)),
     );
   }
 }
@@ -42,7 +60,8 @@ class EmployeeDetailView extends StatelessWidget {
 class MyStatelessWidget extends StatelessWidget {
   final EmployeeDetailViewModel viewModel;
   final BuildContext buildContext;
-  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext});
+  final void Function(BuildContext context, TextEditingController textEditingController)? showCalendar;
+  MyStatelessWidget({super.key, required this.viewModel, required this.buildContext, this.showCalendar});
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +127,7 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
+                            onTap: ()=> showCalendar!(buildContext,viewModel.textEditingControllerList[4]),
                             icon: Icon(Icons.person),
                             tittle: "Doğum Tarihi",
                             textEditingController:
@@ -115,6 +135,7 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
+                            onTap: ()=> showCalendar!(buildContext,viewModel.textEditingControllerList[5]),
                             icon: Icon(Icons.person),
                             tittle: "Başlangıç Tarihi",
                             textEditingController:

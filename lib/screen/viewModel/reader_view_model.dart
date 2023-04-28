@@ -15,15 +15,24 @@ abstract class _ReaderViewModelBase with Store {
   @observable
   List<Reader>? readerList;
 
+  @observable
+  List<Reader>? readers;
+
   _ReaderViewModelBase(this.readerService);
 
   @action
   init() async {
-    readerList = await readerService.getReaders();
+    readers = await readerService.getReaders();
+    readerList = readers;
     if (readerList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  filter(name){
+    readerList = readers?.where((reader) => reader.name!.startsWith(name)).toList();
   }
 }

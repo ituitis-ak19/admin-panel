@@ -17,7 +17,7 @@ class TimeOffTypeDetailView extends StatelessWidget {
   final BuildContext buildContext;
   const TimeOffTypeDetailView({super.key, this.id, required this.buildContext});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'İzin Tipi Detay Pop-up';
 
   @override
   Widget build(BuildContext context) {

@@ -15,15 +15,24 @@ abstract class _DepartmentViewModelBase with Store {
   @observable
   List<Department>? departmentList;
 
+  @observable
+  List<Department>? departments;
+
   _DepartmentViewModelBase(this.departmentService);
 
   @action
   init() async {
-    departmentList = await departmentService.getDepartments();
+    departments = await departmentService.getDepartments();
+    departmentList = departments;
     if (departmentList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+   @action
+  filter(name){
+    departmentList = departments?.where((department) => department.name!.startsWith(name)).toList();
   }
 }

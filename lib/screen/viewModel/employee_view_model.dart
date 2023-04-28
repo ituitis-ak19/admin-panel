@@ -15,15 +15,24 @@ abstract class _EmployeeViewModelBase with Store {
   @observable
   List<Employee>? employeeList;
 
+  @observable
+  List<Employee>? employees;
+
   _EmployeeViewModelBase(this.employeeService);
 
   @action
   init() async {
-    employeeList = await employeeService.getEmployees();
+    employees = await employeeService.getEmployees();
+    employeeList = employees;
     if (employeeList != null && employeeList!.isNotEmpty) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  filter(email){
+    employeeList = employees?.where((employee) => employee.email!.startsWith(email)).toList();
   }
 }

@@ -13,7 +13,7 @@ void main() => runApp(const ReaderView());
 class ReaderView extends StatelessWidget {
   const ReaderView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Okuyucular';
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,10 @@ class ReaderView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Okuyucu İsmine Göre Ara"
                       ),
                     ),
                   ),

@@ -14,7 +14,7 @@ void main() => runApp(const DepartmentView());
 class DepartmentView extends StatelessWidget {
   const DepartmentView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Departmanlar';
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,10 @@ class DepartmentView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Departman İsmine Göre Ara"
                       ),
                     ),
                   ),

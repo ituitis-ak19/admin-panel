@@ -15,15 +15,24 @@ abstract class _TimeOffTypeViewModelBase with Store {
   @observable
   List<TimeOffType>? timeOffTypeList;
 
+  @observable
+  List<TimeOffType>? timeOffTypes;
+
   _TimeOffTypeViewModelBase(this.siteService);
 
   @action
   init() async {
-    timeOffTypeList = await siteService.getTimeOffTypes();
+    timeOffTypes = await siteService.getTimeOffTypes();
+    timeOffTypeList = timeOffTypes;
     if (timeOffTypeList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  filter(name){
+    timeOffTypeList = timeOffTypes?.where((timeOffType) => timeOffType.name!.startsWith(name)).toList();
   }
 }

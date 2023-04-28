@@ -34,8 +34,10 @@ class SiteView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Alan İsmine Göre Ara"
                       ),
                     ),
                   ),

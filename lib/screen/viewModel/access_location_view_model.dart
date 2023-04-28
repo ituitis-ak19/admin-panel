@@ -15,15 +15,25 @@ abstract class _AccessLocationViewModelBase with Store {
   @observable
   List<AccessLocation>? accessLocationList;
 
+  @observable
+  List<AccessLocation>? accessLocations;
+
   _AccessLocationViewModelBase(this.accessLocationService);
 
   @action
   init() async {
-    accessLocationList = await accessLocationService.getAccessLocations();
+    accessLocations = await accessLocationService.getAccessLocations();
+    accessLocationList = accessLocations;
+    
     if (accessLocationList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+  
+  @action
+  filter(name){
+    accessLocationList = accessLocations?.where((accessLocation) => accessLocation.name!.startsWith(name)).toList();
   }
 }

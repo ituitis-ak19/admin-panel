@@ -16,7 +16,7 @@ class ReaderDetailView extends StatelessWidget {
   final BuildContext buildContext;
   const ReaderDetailView({super.key, this.id, required this.buildContext});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Okuyucu Detay Pop-up';
 
   @override
   Widget build(BuildContext context) {

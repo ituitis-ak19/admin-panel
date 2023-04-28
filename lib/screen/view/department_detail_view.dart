@@ -18,7 +18,7 @@ class DepartmentDetailView extends StatelessWidget {
   final BuildContext buildContext;
   const DepartmentDetailView({super.key, this.id, required this.buildContext});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Departman Detay Pop-up';
 
   @override
   Widget build(BuildContext context) {

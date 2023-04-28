@@ -13,7 +13,7 @@ void main() => runApp(const EmployeeView());
 class EmployeeView extends StatelessWidget {
   const EmployeeView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Çalışanlar';
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,10 @@ class EmployeeView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Çalışan E-Mailine Göre Ara"
                       ),
                     ),
                   ),

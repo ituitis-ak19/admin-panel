@@ -19,16 +19,25 @@ abstract class _TimeOffViewModelBase with Store {
   @observable
   List<TimeOff>? timeOffList;
 
+  @observable
+  List<TimeOff>? timeOffs;
+
   _TimeOffViewModelBase(this.timeOffService, this.buildContext);
 
   @action
   init() async {
-    timeOffList = await timeOffService.getTimeOffs();
+    timeOffs = await timeOffService.getTimeOffs();
+    timeOffList = timeOffs;
     if (timeOffList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  filter(name){
+    timeOffList = timeOffs?.where((timeOff) => timeOff.firstName!.startsWith(name)).toList();
   }
 
   @action

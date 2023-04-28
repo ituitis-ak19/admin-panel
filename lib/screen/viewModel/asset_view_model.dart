@@ -15,15 +15,24 @@ abstract class _AssetViewModelBase with Store {
   @observable
   List<Asset>? assetList;
 
+  @observable
+  List<Asset>? assets;
+
   _AssetViewModelBase(this.assetService);
 
   @action
   init() async {
-    assetList = await assetService.getAssets();
+    assets =  await assetService.getAssets();
+    assetList = assets;
     if (assetList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+   @action
+  filter(name){
+    assetList = assets?.where((asset) => asset.name!.startsWith(name)).toList();
   }
 }

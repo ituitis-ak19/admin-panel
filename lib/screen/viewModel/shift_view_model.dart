@@ -15,15 +15,24 @@ abstract class _ShiftViewModelBase with Store {
   @observable
   List<Shift>? shiftList;
 
+  @observable
+  List<Shift>? shifts;
+
   _ShiftViewModelBase(this.shiftService);
 
   @action
   init() async {
-    shiftList = await shiftService.getShifts();
+    shifts = await shiftService.getShifts();
+    shiftList = shiftList;
     if (shiftList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  filter(name){
+    shiftList = shifts?.where((shift) => shift.name!.startsWith(name)).toList();
   }
 }

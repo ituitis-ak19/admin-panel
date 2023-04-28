@@ -15,15 +15,24 @@ abstract class _SiteViewModelBase with Store {
   @observable
   List<Site>? siteList;
 
+  @observable
+  List<Site>? sites;
+
   _SiteViewModelBase(this.siteService);
 
   @action
   init() async {
-    siteList = await siteService.getSites();
+    sites = await siteService.getSites();
+    siteList = sites;
     if (siteList != null) {
       dataState = DataState.READY;
     } else {
       dataState = DataState.ERROR;
     }
+  }
+
+  @action
+  filter(name){
+    siteList = sites?.where((sites) => sites.name!.startsWith(name)).toList();
   }
 }

@@ -16,7 +16,7 @@ class AccessLocationDetailView extends StatelessWidget {
   final BuildContext buildContext;
   AccessLocationDetailView({super.key, required this.id, required this.buildContext});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Giriş Noktası Detay Pop-up';
 
   @override
   Widget build(BuildContext context) {

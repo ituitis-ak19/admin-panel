@@ -11,7 +11,7 @@ import '../../core/util/size_config.dart';
 class TimeOffTypeView extends StatelessWidget {
   const TimeOffTypeView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'İzin Detayları';
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,10 @@ class TimeOffTypeView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "İzin tipi İsmine Göre Ara"
                       ),
                     ),
                   ),

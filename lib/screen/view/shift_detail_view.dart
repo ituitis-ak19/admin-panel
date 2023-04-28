@@ -14,7 +14,7 @@ class ShiftDetailView extends StatelessWidget {
   final BuildContext buildContext;
   const ShiftDetailView({super.key, this.id, required this.buildContext});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Vardiya Detayı';
 
   @override
   Widget build(BuildContext context) {

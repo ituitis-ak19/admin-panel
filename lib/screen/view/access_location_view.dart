@@ -12,7 +12,7 @@ void main() => runApp(const AccessLocationView());
 class AccessLocationView extends StatelessWidget {
   const AccessLocationView({super.key});
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'Giriş Noktaları';
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,10 @@ class AccessLocationView extends StatelessWidget {
                   Container(
                     width: SizeConfig.width * 0.75,
                     child: TextField(
+                      onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
+                        labelText: "Giriş Noktası İsmine Göre Ara"
                       ),
                     ),
                   ),
