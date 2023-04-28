@@ -53,7 +53,7 @@ class ShiftView extends StatelessWidget {
                                           0.3,
                                       height:
                                           SizeConfig.height *
-                                              0.3,
+                                              0.28,
                                       child: ShiftDetailView(
                                           id: null,
                                           buildContext: context,)),
@@ -161,14 +161,10 @@ class MyStatelessWidget extends StatelessWidget {
                                           builder: (BuildContext context) {
                                             return AlertDialog(
                                               content: Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.3,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.3,
+                                                  width: SizeConfig.width *
+                                              0.28,
+                                                  height: SizeConfig.height *
+                                              0.28,
                                                   child: ShiftDetailView(
                                                       id: element.id!,
                                                       buildContext: context,)),

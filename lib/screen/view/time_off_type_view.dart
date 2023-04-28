@@ -34,9 +34,8 @@ class TimeOffTypeView extends StatelessWidget {
                     child: TextField(
                       onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        labelText: "İzin tipi İsmine Göre Ara"
-                      ),
+                          prefixIcon: Icon(Icons.search),
+                          labelText: "İzin tipi İsmine Göre Ara"),
                     ),
                   ),
                   Container(
@@ -49,15 +48,12 @@ class TimeOffTypeView extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   content: Container(
-                                      width: SizeConfig.width *
-                                          0.3,
-                                      height:
-                                          SizeConfig.height *
-                                              0.3,
+                                      width: SizeConfig.width * 0.3,
+                                      height: SizeConfig.height * 0.2,
                                       child: TimeOffTypeDetailView(
-                                          id: null,
-                                          buildContext: context,)),
-                                  
+                                        id: null,
+                                        buildContext: context,
+                                      )),
                                 );
                               });
                         },
@@ -100,7 +96,7 @@ class MyStatelessWidget extends StatelessWidget {
             width: SizeConfig.width * 0.5,
             height: SizeConfig.height * 0.75,
             child: SingleChildScrollView(
-              child: DataTable(
+                child: DataTable(
               columns: const <DataColumn>[
                 DataColumn(
                   label: Expanded(
@@ -140,7 +136,8 @@ class MyStatelessWidget extends StatelessWidget {
                   .map(
                     ((element) => DataRow(cells: <DataCell>[
                           DataCell(Text(element.id!.toString())),
-                          DataCell(Text(element.name!)), //Extracting from Map element the value
+                          DataCell(Text(element
+                              .name!)), //Extracting from Map element the value
                           DataCell(Text(element.description!)),
                           DataCell(Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -152,17 +149,13 @@ class MyStatelessWidget extends StatelessWidget {
                                           builder: (BuildContext context) {
                                             return AlertDialog(
                                               content: Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.3,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.3,
+                                                  width: SizeConfig.width * 0.3,
+                                                  height:
+                                                      SizeConfig.height * 0.2,
                                                   child: TimeOffTypeDetailView(
-                                                      id: element.id!,
-                                                      buildContext: context,)),
+                                                    id: element.id!,
+                                                    buildContext: context,
+                                                  )),
                                             );
                                           });
                                     },

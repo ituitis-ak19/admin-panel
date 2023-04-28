@@ -64,7 +64,7 @@ class MyStatelessWidget extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.work),
                           tittle: "Departman Adı",
                           textEditingController:
                                 viewModel.textEditingControllerList[0])),
@@ -84,7 +84,7 @@ class MyStatelessWidget extends StatelessWidget {
                                       borderSide:
                                           BorderSide(width: 1, color: Colors.grey)),
                                   iconColor: Theme.of(context).colorScheme.primary,
-                                  prefixIcon: Icon(Icons.work)),
+                                  prefixIcon: Icon(Icons.person)),
                               isExpanded: true,
                               items:
                                   viewModel.employeeList!.map((Employee items) {
@@ -123,7 +123,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                 width: 1, color: Colors.grey)),
                                         iconColor:
                                             Theme.of(context).colorScheme.primary,
-                                        prefixIcon: Icon(Icons.work)),
+                                        prefixIcon: Icon(Icons.people)),
                                     isExpanded: true,
                                     items: viewModel.employeeList!.map((Employee items) {
                                       return DropdownMenuItem( 

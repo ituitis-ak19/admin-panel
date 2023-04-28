@@ -55,7 +55,7 @@ class AccessLocationView extends StatelessWidget {
                                                   0.3,
                                           height:
                                               SizeConfig.height *
-                                                  0.3,
+                                                  0.28,
                                           child: AccessLocationDetailView(id: null, buildContext: context,)),
                                     );
                                   });
@@ -163,7 +163,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                   0.3,
                                           height:
                                               SizeConfig.height *
-                                                  0.3,
+                                                  0.28,
                                           child: AccessLocationDetailView(id: element.id!, buildContext: context,)),
                                     );
                                   });

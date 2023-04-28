@@ -56,7 +56,7 @@ class MyStatelessWidget extends StatelessWidget {
                 ),
               ),
                ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.access_alarm),
                           tittle: "Vardiya  Adı",
                           textEditingController:
                               viewModel.textEditingControllerList[0]),
@@ -65,14 +65,14 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.access_time),
                             tittle: "Başlangıç Saati",
                             textEditingController:
                                 viewModel.textEditingControllerList[1])),
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.access_time),
                             tittle: "Bitiş Saati",
                             textEditingController:
                                 viewModel.textEditingControllerList[2])),

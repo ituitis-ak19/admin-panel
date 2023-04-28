@@ -23,7 +23,7 @@ abstract class _ShiftViewModelBase with Store {
   @action
   init() async {
     shifts = await shiftService.getShifts();
-    shiftList = shiftList;
+    shiftList = shifts;
     if (shiftList != null) {
       dataState = DataState.READY;
     } else {

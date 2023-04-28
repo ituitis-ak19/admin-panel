@@ -65,14 +65,14 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.room),
                             tittle: "Ad",
                             textEditingController:
                                  viewModel.textEditingControllerList[0])),
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.control_point),
                             tittle: "Tip",
                             textEditingController:
                                  viewModel.textEditingControllerList[1])),
@@ -96,7 +96,7 @@ class MyStatelessWidget extends StatelessWidget {
                                         borderSide:
                                             BorderSide(width: 1, color: Colors.grey)),
                                     iconColor: Theme.of(context).colorScheme.primary,
-                                    prefixIcon: Icon(Icons.work)),
+                                    prefixIcon: Icon(Icons.aspect_ratio)),
                                 isExpanded: true,
                                 items: viewModel.siteList!.map((Site items) {
                                   return DropdownMenuItem(
@@ -114,7 +114,7 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.location_searching),
                             tittle: "Konum",
                             textEditingController:
                                  viewModel.textEditingControllerList[2])),

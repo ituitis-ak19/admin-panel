@@ -109,14 +109,14 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.mail),
                             tittle: "Email",
                             textEditingController:
                                 viewModel.textEditingControllerList[2])),
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.credit_card),
                             tittle: "Kimlik Numarası",
                             textEditingController:
                                 viewModel.textEditingControllerList[3])),
@@ -128,7 +128,7 @@ class MyStatelessWidget extends StatelessWidget {
                         flex: 5,
                         child: ProfileCard(
                             onTap: ()=> showCalendar!(buildContext,viewModel.textEditingControllerList[4]),
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.date_range),
                             tittle: "Doğum Tarihi",
                             textEditingController:
                                 viewModel.textEditingControllerList[4])),
@@ -136,7 +136,7 @@ class MyStatelessWidget extends StatelessWidget {
                         flex: 5,
                         child: ProfileCard(
                             onTap: ()=> showCalendar!(buildContext,viewModel.textEditingControllerList[5]),
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.date_range),
                             tittle: "Başlangıç Tarihi",
                             textEditingController:
                                 viewModel.textEditingControllerList[5])),
@@ -194,7 +194,7 @@ class MyStatelessWidget extends StatelessWidget {
                                         borderSide:
                                             BorderSide(width: 1, color: Colors.grey)),
                                     iconColor: Theme.of(context).colorScheme.primary,
-                                    prefixIcon: Icon(Icons.access_time)),
+                                    prefixIcon: Icon(Icons.access_alarm)),
                                 isExpanded: true,
                                 items:
                                     viewModel.shiftList!.map((Shift items) {
@@ -264,7 +264,7 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.calendar_month),
                             tittle: "Kalan İzin Günleri",
                             textEditingController:
                                 viewModel.textEditingControllerList[6])),
@@ -286,7 +286,7 @@ class MyStatelessWidget extends StatelessWidget {
                                             width: 1, color: Colors.grey)),
                                     iconColor:
                                         Theme.of(context).colorScheme.primary,
-                                    prefixIcon: Icon(Icons.work)),
+                                    prefixIcon: Icon(Icons.people)),
                                 isExpanded: true,
                                 items: const <DropdownMenuItem<String>>[
                                   DropdownMenuItem(
@@ -332,7 +332,7 @@ class MyStatelessWidget extends StatelessWidget {
                                           iconColor: Theme.of(context)
                                               .colorScheme
                                               .primary,
-                                          prefixIcon: Icon(Icons.work)),
+                                          prefixIcon: Icon(Icons.aspect_ratio)),
                                       isExpanded: true,
                                       items:
                                           viewModel.siteList!.map((Site items) {

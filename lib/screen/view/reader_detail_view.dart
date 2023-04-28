@@ -62,14 +62,14 @@ class MyStatelessWidget extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.qr_code_scanner),
                           tittle: "Okuyucu  Adı",
                           textEditingController:
                               viewModel.textEditingControllerList[0])),
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.control_point),
                           tittle: "Okuyucu Tipi",
                           textEditingController:
                               viewModel.textEditingControllerList[1])),
@@ -80,7 +80,7 @@ class MyStatelessWidget extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: ProfileCard(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.swap_horiz),
                           tittle: "Okuyucu Yönü",
                           textEditingController:
                               viewModel.textEditingControllerList[2])),
@@ -101,7 +101,7 @@ class MyStatelessWidget extends StatelessWidget {
                                       borderSide:
                                           BorderSide(width: 1, color: Colors.grey)),
                                   iconColor: Theme.of(context).colorScheme.primary,
-                                  prefixIcon: Icon(Icons.work)),
+                                  prefixIcon: Icon(Icons.room)),
                               isExpanded: true,
                               items: viewModel.accessLocationList!.map((AccessLocation items) {
                                 return DropdownMenuItem(

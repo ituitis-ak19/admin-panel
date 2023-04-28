@@ -70,14 +70,14 @@ class MyStatelessWidget extends StatelessWidget {
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.tour),
                             tittle: "İzin Tipi Adı",
                             textEditingController:
                                 viewModel.textEditingControllerList[0])),
                     Expanded(
                         flex: 5,
                         child: ProfileCard(
-                            icon: Icon(Icons.person),
+                            icon: Icon(Icons.description),
                             tittle: "İzin Tipi Açıklaması",
                             textEditingController:
                                 viewModel.textEditingControllerList[1])),
