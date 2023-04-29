@@ -33,6 +33,6 @@ abstract class _DepartmentViewModelBase with Store {
 
    @action
   filter(name){
-    departmentList = departments?.where((department) => department.name!.startsWith(name)).toList();
+    departmentList = departments?.where((department) => department.name!.toLowerCase().startsWith(name.toLowerCase())).toList();
   }
 }

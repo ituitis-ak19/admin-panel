@@ -33,6 +33,6 @@ abstract class _EmployeeViewModelBase with Store {
 
   @action
   filter(email){
-    employeeList = employees?.where((employee) => employee.email!.startsWith(email)).toList();
+    employeeList = employees?.where((employee) => employee.email!.toLowerCase().startsWith(email.toLowerCase())).toList();
   }
 }

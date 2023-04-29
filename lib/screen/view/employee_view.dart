@@ -32,7 +32,7 @@ class EmployeeView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: SizeConfig.width * 0.75,
+                    width: SizeConfig.width * 0.7,
                     child: TextField(
                       onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
@@ -42,7 +42,7 @@ class EmployeeView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: SizeConfig.height * 0.05,
+                    height: SizeConfig.height * 0.045,
                     width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {

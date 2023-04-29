@@ -33,6 +33,6 @@ abstract class _AssetViewModelBase with Store {
 
    @action
   filter(name){
-    assetList = assets?.where((asset) => asset.name!.startsWith(name)).toList();
+    assetList = assets?.where((asset) => asset.name!.toLowerCase().startsWith(name.toLowerCase())).toList();
   }
 }

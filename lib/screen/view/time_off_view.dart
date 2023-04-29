@@ -28,10 +28,10 @@ class TimeOffView extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    width: SizeConfig.width * 0.81,
+                    width: SizeConfig.width * 0.8,
                     child: TextField(
                       onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(

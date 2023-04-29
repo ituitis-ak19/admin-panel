@@ -33,6 +33,6 @@ abstract class _ReaderViewModelBase with Store {
 
   @action
   filter(name){
-    readerList = readers?.where((reader) => reader.name!.startsWith(name)).toList();
+    readerList = readers?.where((reader) => reader.name!.toLowerCase().startsWith(name.toLowerCase())).toList();
   }
 }

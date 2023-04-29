@@ -31,7 +31,7 @@ class AccessLocationView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: SizeConfig.width * 0.75,
+                    width: SizeConfig.width * 0.7,
                     child: TextField(
                       onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
@@ -41,7 +41,7 @@ class AccessLocationView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: SizeConfig.height * 0.05,
+                    height: SizeConfig.height * 0.045,
                     width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
@@ -55,7 +55,7 @@ class AccessLocationView extends StatelessWidget {
                                                   0.3,
                                           height:
                                               SizeConfig.height *
-                                                  0.28,
+                                                  0.3,
                                           child: AccessLocationDetailView(id: null, buildContext: context,)),
                                     );
                                   });
@@ -163,7 +163,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                   0.3,
                                           height:
                                               SizeConfig.height *
-                                                  0.28,
+                                                  0.3,
                                           child: AccessLocationDetailView(id: element.id!, buildContext: context,)),
                                     );
                                   });

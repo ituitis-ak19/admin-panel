@@ -33,6 +33,6 @@ abstract class _SiteViewModelBase with Store {
 
   @action
   filter(name){
-    siteList = sites?.where((sites) => sites.name!.startsWith(name)).toList();
+    siteList = sites?.where((sites) => sites.name!.toLowerCase().startsWith(name.toLowerCase())).toList();
   }
 }

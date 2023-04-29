@@ -33,7 +33,7 @@ class AssetView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: SizeConfig.width * 0.75,
+                    width: SizeConfig.width * 0.7,
                     child: TextField(
                       onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
@@ -43,7 +43,7 @@ class AssetView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: SizeConfig.height * 0.05,
+                    height: SizeConfig.height * 0.045,
                     width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
@@ -59,7 +59,7 @@ class AssetView extends StatelessWidget {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.3,
+                                                    0.32,
                                                 child: AssetDetailView(id: null, buildContext: context)),
                                           );
                                         });
@@ -170,7 +170,7 @@ class MyStatelessWidget extends StatelessWidget {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.3,
+                                                    0.32,
                                                 child: AssetDetailView(id: element.id!, buildContext: context,)),
                                           );
                                         });

@@ -58,67 +58,70 @@ class MainView extends StatelessWidget {
         builder: (_) {
           return Row(children: [
             /// Pretty similar to the BottomNavigationBar!
-            SideNavigationBar(
-              expandable: false,
-              header: SideNavigationBarHeader(
-                  image: Image.asset('assets/logo-white.png', width: SizeConfig.width * 0.1),
-                  title: Text(''),
-                  subtitle: Text('')),
-              selectedIndex: viewModel.selectedIndex,
-              items: const [
-                SideNavigationBarItem(
-                  icon: Icons.aspect_ratio,
-                  label: 'Alanlar',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.room,
-                  label: 'Giriş Noktaları',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.qr_code_scanner,
-                  label: 'Okuyucular',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.work,
-                  label: 'Departmanlar',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.access_alarm,
-                  label: 'Vardiya',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.people,
-                  label: 'Çalışanlar',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.tour,
-                  label: 'İzin Tipleri',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.computer,
-                  label: 'Zimmetli Ürünler',
-                ),
-                SideNavigationBarItem(
-                  icon: Icons.edit_document,
-                  label: 'İmzalanacak İzinler',
-                ),
-              ],
-              onTap: (value) {
-                viewModel.setSelectedIndex(value);
-              },
-              
-              theme: SideNavigationBarTheme(
-                  itemTheme: SideNavigationBarItemTheme(
-                    unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
-                    selectedItemColor: Color.fromARGB(255, 55, 107, 251),
-                    iconSize: 32.5,
+            Container(
+              width: SizeConfig.width * 0.15,
+              child: SideNavigationBar(
+                expandable: false,
+                header: SideNavigationBarHeader(
+                    image: Image.asset('assets/logo-white.png', width: SizeConfig.width * 0.06,),
+                    title: Text(''),
+                    subtitle: Text('')),
+                selectedIndex: viewModel.selectedIndex,
+                items: const [
+                  SideNavigationBarItem(
+                    icon: Icons.aspect_ratio,
+                    label: 'Alanlar',
                   ),
-                  backgroundColor: Color.fromARGB(255, 43, 38, 77),
-                  togglerTheme: const SideNavigationBarTogglerTheme(
-                    expandIconColor: Color.fromARGB(255, 39, 47, 53),
-                    shrinkIconColor: Color.fromARGB(255, 55, 107, 251),
+                  SideNavigationBarItem(
+                    icon: Icons.room,
+                    label: 'Giriş Noktaları',
                   ),
-                  dividerTheme: SideNavigationBarDividerTheme.standard()),
+                  SideNavigationBarItem(
+                    icon: Icons.qr_code_scanner,
+                    label: 'Okuyucular',
+                  ),
+                  SideNavigationBarItem(
+                    icon: Icons.work,
+                    label: 'Departmanlar',
+                  ),
+                  SideNavigationBarItem(
+                    icon: Icons.access_alarm,
+                    label: 'Vardiya',
+                  ),
+                  SideNavigationBarItem(
+                    icon: Icons.people,
+                    label: 'Çalışanlar',
+                  ),
+                  SideNavigationBarItem(
+                    icon: Icons.tour,
+                    label: 'İzin Tipleri',
+                  ),
+                  SideNavigationBarItem(
+                    icon: Icons.computer,
+                    label: 'Zimmetli Ürünler',
+                  ),
+                  SideNavigationBarItem(
+                    icon: Icons.edit_document,
+                    label: 'İmzalanacak İzinler',
+                  ),
+                ],
+                onTap: (value) {
+                  viewModel.setSelectedIndex(value);
+                },
+                
+                theme: SideNavigationBarTheme(
+                    itemTheme: SideNavigationBarItemTheme(
+                      unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
+                      selectedItemColor: Color.fromARGB(255, 55, 107, 251),
+                      iconSize: 32.5,
+                    ),
+                    backgroundColor: Color.fromARGB(255, 43, 38, 77),
+                    togglerTheme: const SideNavigationBarTogglerTheme(
+                      expandIconColor: Color.fromARGB(255, 39, 47, 53),
+                      shrinkIconColor: Color.fromARGB(255, 55, 107, 251),
+                    ),
+                    dividerTheme: SideNavigationBarDividerTheme.standard()),
+              ),
             ),
 
             /// Make it take the rest of the available width

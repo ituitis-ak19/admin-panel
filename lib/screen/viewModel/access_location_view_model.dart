@@ -34,6 +34,6 @@ abstract class _AccessLocationViewModelBase with Store {
   
   @action
   filter(name){
-    accessLocationList = accessLocations?.where((accessLocation) => accessLocation.name!.startsWith(name)).toList();
+    accessLocationList = accessLocations?.where((accessLocation) => accessLocation.name!.toLowerCase().startsWith(name.toLowerCase())).toList();
   }
 }

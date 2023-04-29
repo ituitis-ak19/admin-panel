@@ -33,6 +33,6 @@ abstract class _TimeOffTypeViewModelBase with Store {
 
   @action
   filter(name){
-    timeOffTypeList = timeOffTypes?.where((timeOffType) => timeOffType.name!.startsWith(name)).toList();
+    timeOffTypeList = timeOffTypes?.where((timeOffType) => timeOffType.name!.toLowerCase().startsWith(name.toLowerCase)).toList();
   }
 }

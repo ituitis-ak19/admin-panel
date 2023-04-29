@@ -33,6 +33,6 @@ abstract class _ShiftViewModelBase with Store {
 
   @action
   filter(name){
-    shiftList = shifts?.where((shift) => shift.name!.startsWith(name)).toList();
+    shiftList = shifts?.where((shift) => shift.name!.toLowerCase().startsWith(name.toLowerCase())).toList();
   }
 }

@@ -32,7 +32,7 @@ class SiteView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: SizeConfig.width * 0.75,
+                    width: SizeConfig.width * 0.7,
                     child: TextField(
                       onChanged: (value) => viewModel.filter(value),
                       decoration: InputDecoration(
@@ -42,7 +42,7 @@ class SiteView extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: SizeConfig.height * 0.05,
+                    height: SizeConfig.height * 0.045,
                     width: SizeConfig.width * 0.07,
                     child: TextButton(
                         onPressed: () {
@@ -58,13 +58,13 @@ class SiteView extends StatelessWidget {
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.22,
+                                                  0.24,
                                               child: SiteDetailView(id: null, buildContext: context,)),
                                         );
                                       });
                                 },
                         child: Text("Yeni Oluştur",
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Colors.white),),
                         style: TextButton.styleFrom(
                             backgroundColor:
                                 Color.fromARGB(255, 55, 107, 251))),
@@ -150,7 +150,7 @@ class MyStatelessWidget extends StatelessWidget {
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.22,
+                                                  0.24,
                                               child: SiteDetailView(id: element.id!, buildContext: context,)),
                                         );
                                       });
